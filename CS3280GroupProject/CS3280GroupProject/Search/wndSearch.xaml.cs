@@ -11,15 +11,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using CS3280GroupProject.Main;
 
-namespace CS3280GroupProject
+namespace CS3280GroupProject.Search
 {
     /// <summary>
-    /// Interaction logic for Window1.xaml
+    /// Interaction logic for wndSearch.xaml
     /// </summary>
-    public partial class Window1 : Window
+    public partial class wndSearch : Window
     {
-        public Window1()
+        public wndSearch()
         {
             InitializeComponent();
         }

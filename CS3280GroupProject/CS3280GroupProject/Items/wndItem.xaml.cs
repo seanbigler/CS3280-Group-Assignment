@@ -11,15 +11,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using CS3280GroupProject.Main;
 
-namespace CS3280GroupProject
+namespace CS3280GroupProject.Items
 {
     /// <summary>
-    /// Interaction logic for Window2.xaml
+    /// Interaction logic for wndItem.xaml
     /// </summary>
-    public partial class Window2 : Window
+    public partial class wndItem : Window
     {
-        public Window2()
+        public wndItem()
         {
             InitializeComponent();
         }
