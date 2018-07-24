@@ -1,3 +1,3 @@
 # CS3280-Group-Assignment
 
-<h3> After fork and clone. Pull request to the <em>submaster</em> branch </h3>
+<h3> After fork and clone, push to master branch </h3>
