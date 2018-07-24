@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CS3280GroupProject.Main"
         mc:Ignorable="d" FontSize="12"
-        Title="Store Name - Main" Height="500" Width="700" MinWidth="500" MinHeight="500">
+        Title="Invoice System - Main" Height="500" Width="700"
+                Icon="/Icons/diamond3.png" MinWidth="500" MinHeight="500">
     <Window.Resources>
         <Style TargetType="Menu">
             <Setter Property="Background" Value="#2672EC"/>
@@ -30,9 +31,9 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="(Logo) Invoice System" Grid.Column="0" 
+        <TextBlock Text="Invoice System" Grid.Column="0" 
                    Grid.Row="0" Grid.ColumnSpan="3" FontSize="20" Padding="15,5,15,5"/>
-        <Menu Grid.Column="2" Grid.Row="0" IsMainMenu="True"
+        <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" IsMainMenu="True"
               FontSize="16" HorizontalAlignment="Right">
             <MenuItem Header="Update" Margin="0,5,5,5" Padding="15,5,15,5"></MenuItem>
             <MenuItem Header="Search" Margin="5,5,10,5" Padding="15,5,15,5"></MenuItem>

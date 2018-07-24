@@ -131,9 +131,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Icons\diamond3.png" />
     <Content Include="Invoice.mdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
