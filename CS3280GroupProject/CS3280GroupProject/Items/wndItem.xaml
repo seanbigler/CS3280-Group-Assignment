@@ -5,8 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CS3280GroupProject.Items"
         mc:Ignorable="d"
-        Title="wndItem" Height="300" Width="300">
+        Title="wndItem" Height="355.32" Width="569.149">
     <Grid>
-        
+        <DataGrid HorizontalAlignment="Left" Height="283" Margin="20,23,0,0" VerticalAlignment="Top" Width="254"/>
+        <Label Content="Item Description:" HorizontalAlignment="Left" Margin="294,102,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right"/>
+        <TextBox x:Name="txtDescription" HorizontalAlignment="Left" Height="23" Margin="415,106,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Cost:" HorizontalAlignment="Left" Margin="294,140,0,0" VerticalAlignment="Top" Width="100" HorizontalContentAlignment="Right"/>
+        <TextBox x:Name="txtCost" HorizontalAlignment="Left" Height="23" Margin="415,144,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Item Code:" HorizontalAlignment="Left" Margin="294,62,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="100"/>
+        <TextBox x:Name="txtCode" HorizontalAlignment="Left" Height="23" Margin="415,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Add" HorizontalAlignment="Left" Margin="339,259,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Content="Delete" HorizontalAlignment="Left" Margin="460,259,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Content="Update" HorizontalAlignment="Left" Margin="460,203,0,0" VerticalAlignment="Top" Width="75"/>
     </Grid>
 </Window>
