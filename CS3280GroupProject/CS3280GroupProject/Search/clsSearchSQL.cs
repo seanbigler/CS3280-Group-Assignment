@@ -12,14 +12,14 @@ namespace CS3280GroupProject.Search
         #region Methods
         #region CBSQL
         /// <summary>
-        /// This SQL gets all invoices
+        /// This SQL gets all InvoiceNum
         /// </summary>
         /// <returns>All data for all invoices</returns>
-        public static string GetAllInvoices()//Not tested
+        public static string GetAllInvoiceNums()//To fill CBInvoice
         {
             try
             {
-                string sSQL = "SELECT * FROM Invoices";
+                string sSQL = "SELECT DISTINCT InvoiceNum FROM Invoices";
                 return sSQL;
             }
             catch (Exception ex)
@@ -33,11 +33,11 @@ namespace CS3280GroupProject.Search
         /// This SQL gets all InvoiceDates
         /// </summary>
         /// <returns>All InvoiceDates</returns>
-        public static string GetAllInvoiceDates()//Not tested
+        public static string GetAllInvoiceDates()//To fill CBDate
         {
             try
             {
-                string sSQL = "SELECT InvoiceDate FROM Invoices";
+                string sSQL = "SELECT DISTINCT InvoiceDate FROM Invoices";
                 return sSQL;
             }
             catch (Exception ex)
@@ -51,12 +51,12 @@ namespace CS3280GroupProject.Search
         /// This SQL gets all invoice total costs
         /// </summary>
         /// <returns>All invoice totals</returns>
-        public static string GetAllInvoiceTotals()//Not tested
+        public static string GetAllInvoiceTotals()//To fill CBTotal
         {
             try
             {
-                string sSQL = "SELECT SUM(id.Cost) " +
-                              "FROM id ItemDesc, li LineItems, i Invoices" +
+                string sSQL = "SELECT DISTINCT SUM(id.Cost) AS Total" +
+                              "FROM ItemDesc id, LineItems li, Invoices i" +
                               "WHERE i.InvoiceNum = li.InvoiceNum " +
                               "AND li.ItemCode = id.ItemCode" +
                               "GROUP BY i.InvoiceNum";
@@ -76,11 +76,16 @@ namespace CS3280GroupProject.Search
         /// </summary>
         /// <param name="sInvoiceNum">The InvoiceNum for the invoice to retrieve all data.</param>
         /// <returns>All data for the given invoice.</returns>
-        public static string GetInvoice(string sInvoiceNum)//Not tested
+        public static string GetAllInvoicesWithNum(string sInvoiceNum)//Fill DG when selected sInvoiceNum
         {
             try
             {
-                string sSQL = "SELECT * FROM Invoices WHERE InvoiceNum = " + sInvoiceNum;
+                string sSQL = "SELECT i.InvoiceNum, i.InvoiceDate, SUM(id.Cost) AS Total" +
+                                "FROM ItemDesc id, LineItems li, Invoices i" +
+                                "WHERE i.InvoiceNum = li.InvoiceNum" +
+                                "AND li.ItemCode = id.ItemCode" +
+                                "AND i.InvoiceNum = " + sInvoiceNum +
+                                "GROUP BY i.InvoiceNum, i.InvoiceDate";
                 return sSQL;
             }
             catch (Exception ex)
@@ -95,11 +100,16 @@ namespace CS3280GroupProject.Search
         /// </summary>
         /// <param name="sInvoiceDate">The InvoiceDate for the invoice to retrieve all data.</param>
         /// <returns>All invoices for the given InvoiceDate.</returns>
-        public static string GetAllInvoicesWithDate(string sInvoiceDate)//Not tested
+        public static string GetAllInvoicesWithDate(string sInvoiceDate)//Fill DG when selected sInvoiceDate
         {
             try
             {
-                string sSQL = "SELECT * FROM Invoices WHERE InvoiceDate = " + sInvoiceDate;
+                string sSQL = "SELECT i.InvoiceNum, i.InvoiceDate, SUM(id.Cost) AS Total" +
+                                "FROM ItemDesc id, LineItems li, Invoices i" +
+                                "WHERE i.InvoiceNum = li.InvoiceNum" +
+                                "AND li.ItemCode = id.ItemCode" +
+                                "AND i.InvoiceDate = #" + sInvoiceDate + "#" +
+                                "GROUP BY i.InvoiceNum, i.InvoiceDate";
                 return sSQL;
             }
             catch (Exception ex)
@@ -110,21 +120,20 @@ namespace CS3280GroupProject.Search
         }
 
         /// <summary>
-        /// This SQL gets the total cost of an invoice for a given InvoiceNum
+        /// This SQL gets InvoiceNums for those with a specific total
         /// </summary>
-        /// <param name="sInvoiceNum">The InvoiceNum for the invoice to retrieve the total cost.</param>
-        /// <returns>The total cost of the invoice.</returns>
-        public static string GetAllInvoicesWithTotal(string sInvoiceNum)//Not complete Not tested
+        /// <param name="sInvoiceTotal">The InvoiceTotal for the invoice to retrieve the invoices.</param>
+        /// <returns>All invoices with the specified total cost</returns>
+        public static string GetAllInvoicesWithTotal(string sInvoiceTotal)//Fill DG when selected sInvoiceTotal
         {
             try
             {
-                string sSQL = "SELECT InvoiceNum " +
-                              "FROM " +
-                                  "(SELECT i.InvoiceNum, SUM(id.Cost) " +
-                                  "FROM id ItemDesc, li LineItems, i Invoices" +
-                                  "WHERE i.InvoiceNum = li.InvoiceNum " +
-                                  "AND li.ItemCode = id.ItemCode" +
-                                  "GROUP BY i.InvoiceNum)";
+                string sSQL = "SELECT i.InvoiceNum, i.InvoiceDate, SUM(id.Cost) AS Total" +
+                                "FROM ItemDesc id, LineItems li, Invoices i" +
+                                "WHERE i.InvoiceNum = li.InvoiceNum" +
+                                "AND li.ItemCode = id.ItemCode" +
+                                "GROUP BY i.InvoiceNum, i.InvoiceDate" +
+                                "HAVING SUM(id.Cost) = " + sInvoiceTotal;
                 return sSQL;
             }
             catch (Exception ex)
@@ -135,17 +144,17 @@ namespace CS3280GroupProject.Search
         }
         #endregion
 
-        #region OtherSQL - Possibly Not Needed
+        #region OtherSQL
         /// <summary>
         /// This SQL gets the date for an invoice for a given InvoiceNum
         /// </summary>
         /// <param name="sInvoiceNum">The InvoiceNum for the invoice to retrieve the date.</param>
         /// <returns>The date of the invoice.</returns>
-        public static string GetInvoiceDate(string sInvoiceNum)//Not tested
+        public static string GetInvoiceDate(string sInvoiceNum)//Fill CBDate when filtered by sInvoiceNum
         {
             try
             {
-                string sSQL = "SELECT InvoiceDate FROM Invoices WHERE InvoiceNum = " + sInvoiceNum;
+                string sSQL = "SELECT DISTINCT InvoiceDate FROM Invoices WHERE InvoiceNum = " + sInvoiceNum;
                 return sSQL;
             }
             catch (Exception ex)
@@ -160,16 +169,16 @@ namespace CS3280GroupProject.Search
         /// </summary>
         /// <param name="sInvoiceNum">The InvoiceNum for the invoice to retrieve the total cost.</param>
         /// <returns>The total cost of the invoice.</returns>
-        public static string GetInvoiceTotal(string sInvoiceNum)//Not tested
+        public static string GetInvoiceTotal(string sInvoiceNum)//Fill CBTotal when filtered by sInvoiceNum
         {
             try
             {
-                string sSQL = "SELECT SUM(id.Cost) " +
-                              "FROM id ItemDesc, li LineItems, i Invoices" +
-                              "WHERE i.InvoiceNum = li.InvoiceNum " +
-                              "AND li.ItemCode = id.ItemCode" +
-                              "AND i.Invoice Num = " + sInvoiceNum +
-                              "GROUP BY i.InvoiceNum";
+                string sSQL = "SELECT DISTINCT SUM(id.Cost) AS Total" +
+                                "FROM ItemDesc id, LineItems li, Invoices i" +
+                                "WHERE i.InvoiceNum = li.InvoiceNum" +
+                                "AND li.ItemCode = id.ItemCode" +
+                                "AND i.InvoiceNum = " + sInvoiceNum +
+                                "GROUP BY i.InvoiceNum, i.InvoiceDate";
                 return sSQL;
             }
             catch (Exception ex)
@@ -178,6 +187,16 @@ namespace CS3280GroupProject.Search
                                     MethodInfo.GetCurrentMethod().Name + " ->" + ex.Message);
             }
         }
+
+        //cb
+        //filter invoicenums by date
+        //filter invoicenums by total
+        //filter invoicenums by date and total
+        //filter date by total
+        //filter total by date
+
+        //dg
+        //filter by date and total
         #endregion
         #endregion
     }
