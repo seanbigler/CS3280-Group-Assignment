@@ -89,6 +89,29 @@ namespace CS3280GroupProject.Items
                                     MethodInfo.GetCurrentMethod().Name + " ->" + ex.Message);
             }
         }
+        /// <summary>
+        /// Selects InvoiceNum for all invoices containing a desired ItemCode
+        /// </summary>
+        /// <param name="itemID">ItemCode of desired item</param>
+        /// <returns></returns>
+        public string FindItemsOnInvoices(string itemID)
+        {
+            try
+            {
+                string sSQL = "SELECT DISTINCT InvoiceNum" +
+                              "FROM ItemDesc id INNER JOIN LineItems li" +
+                              "ON id.ItemCode = li.ItemCode" +
+                              "WHERE li.ItemCode = '" + itemID + "';";
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " ->" + ex.Message);
+            }
+        }
+
+
 
 
 
