@@ -21,6 +21,26 @@ namespace CS3280GroupProject.Search
     /// </summary>
     public partial class wndSearch : Window
     {
+        #region Attributes
+        private string sSelectedInvoiceNum;
+
+        /// <summary>
+        /// Used to get and set sSelectedInvoiceNum
+        /// </summary>
+        public string SelectedInvoiceNum
+        {
+            get
+            {
+                return sSelectedInvoiceNum;
+            }
+            /*set
+            {
+                sSelectedInvoiceNum = value;
+            }*/
+        }
+
+        #endregion
+
         #region Methods
         /// <summary>
         /// Initializes wndSearch
@@ -87,7 +107,7 @@ namespace CS3280GroupProject.Search
         /// <param name="e"></param>
         private void DGInvoices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            //Possibly not needed
         }
 
         /// <summary>
@@ -100,10 +120,11 @@ namespace CS3280GroupProject.Search
             /*
              * TODO: 
              * Check for selected invoice
-             * give wndMain the InvoiceNum
-             * close this window
+             * Set the sSelectedInvoiceNum with a property that the wndMain can access
+             * Reset all visible data to default
+             * Hide this window
              */
-            this.Close();
+            this.Hide();
         }
 
         /// <summary>
@@ -129,7 +150,12 @@ namespace CS3280GroupProject.Search
         /// <param name="e"></param>
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            /*
+             * TODO: 
+             * Reset all visible data to default
+             * Hide this window
+             */
+            this.Hide();
         }
         #endregion
     }
