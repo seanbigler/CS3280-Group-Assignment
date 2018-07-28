@@ -8,6 +8,9 @@ namespace CS3280GroupProject
 {
     class clsMainSQL
     {
+        #region Class Methods
+
+        #endregion
     }
 }
 //class clsSQL
