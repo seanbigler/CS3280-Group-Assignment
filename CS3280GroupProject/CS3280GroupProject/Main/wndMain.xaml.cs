@@ -35,7 +35,6 @@ namespace CS3280GroupProject.Main
         /// <param name="e"></param>
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-
         }
 
         /// <summary>
@@ -45,38 +44,35 @@ namespace CS3280GroupProject.Main
         /// <param name="e"></param>
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            //Top level error handling here
-            if(searchWindow == null)
-            {
-                searchWindow = new wndSearch(this);
-            }
-            this.Hide();
-            searchWindow.Show();
-            //Top level error handling here
+            
         }
 
         /// <summary>
-        /// 
+        /// This click event will allow users to add line items to invoice.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        private void btnAddItem_Click(object sender, RoutedEventArgs e)
         {
+            /* This will use SQL addLineItem to insert new line item from combobox into database.
+             * 
+             * Refresh dataGrid with updated items.
+             */
 
         }
-
         /// <summary>
-        /// Closes all other windows
+        /// This click event will allow user to remove line items from invoice.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void btnRemoveItem_Click(object sender, RoutedEventArgs e)
         {
-            if (searchWindow != null)
-            {
-                searchWindow.mainWindow = null;
-                searchWindow.Close();
-            }
+            /* This will use SQL removeLineItem to delete line item from database.
+             * 
+             * Refresh dataGrid to update items list.
+             */
+        }
+
         }
     }
 }
