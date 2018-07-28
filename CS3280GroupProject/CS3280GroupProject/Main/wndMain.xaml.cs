@@ -25,5 +25,34 @@ namespace CS3280GroupProject.Main
         {
             InitializeComponent();
         }
+
+        /// <summary>
+        /// This click event will handle the openning and closing of the Update window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// This click event will handle the openning and closing of the Search window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
