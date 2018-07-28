@@ -162,6 +162,26 @@ namespace CS3280GroupProject
                                     MethodInfo.GetCurrentMethod().Name + " ->" + ex.Message);
             }
         }
+        /// <summary>
+        /// This SQL statement updates the invoice line item
+        /// </summary>
+        /// <param name="iInvoiceNumber"></param>
+        /// <param name="iLineItemNum"></param>
+        /// <returns>SQL statement</returns>
+        public static string updateLineItem(int iInvoiceNumber, int iLineItemNumber, string sItemCode)
+        {
+            try
+            {
+                string sSQL = "UPDATE LineItems SET ItemCode = '" + sItemCode + "'" +
+                              "WHERE InvoiceNum = " + iInvoiceNumber + " AND LineItemNum = " + iLineItemNumber +";";
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " ->" + ex.Message);
+            }
+        }
 
 
         #endregion
