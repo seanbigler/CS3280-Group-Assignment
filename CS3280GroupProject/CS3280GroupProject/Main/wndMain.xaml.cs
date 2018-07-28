@@ -21,6 +21,8 @@ namespace CS3280GroupProject.Main
     /// </summary>
     public partial class wndMain : Window
     {
+        public wndSearch searchWindow;
+
         public wndMain()
         {
             InitializeComponent();
@@ -33,7 +35,7 @@ namespace CS3280GroupProject.Main
         /// <param name="e"></param>
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            //Simple .Hide() and .ShowDialog() methods 
+
         }
 
         /// <summary>
@@ -43,107 +45,38 @@ namespace CS3280GroupProject.Main
         /// <param name="e"></param>
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            //Simple .Hide() and .ShowDialog() methods 
+            //Top level error handling here
+            if(searchWindow == null)
+            {
+                searchWindow = new wndSearch(this);
+            }
+            this.Hide();
+            searchWindow.Show();
+            //Top level error handling here
         }
 
         /// <summary>
-        /// This click event will allow user to enter invoice information
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            /* The text boxes and drop box will need to be enabled in the information section
-             * allowing users to edit set values, add and remove line items and save.
-             * 
-             * Datagrid also will be updated as items are added and removed.
-             * NOTE: edit and delete buttons remain disabled.
-             */
-        }
-
-        /// <summary>
-        /// This click event will allow the user to edit line items. 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnEdit_Click(object sender, RoutedEventArgs e)
-        {
-           /* Once a user has saved the invoice. 
-            * The necessary textbox's and combobox will be enabled for editing. 
-            * 
-            * Datagrid also will be updated as necessary.
-            */
-        }
-
-        /// <summary>
-        /// This click event will allow user to delete new invoice.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
-        {
-            /* This button will take SQL statement for deletingInvoice() 
-             * to delete all rows in invoice and lineitems tables.
-             * 
-             * It will disable all user controls in information section other than the add button. 
-             */
 
         }
 
         /// <summary>
-        /// This click event will allow users to add line items to invoice.
+        /// Closes all other windows
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnAddItem_Click(object sender, RoutedEventArgs e)
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            /* This will use SQL addLineItem to insert new line item from combobox into database.
-             * 
-             * Refresh dataGrid with updated items.
-             */
-
-        }
-        /// <summary>
-        /// This click event will allow user to remove line items from invoice.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnRemoveItem_Click(object sender, RoutedEventArgs e)
-        {
-            /* This will use SQL removeLineItem to delete line item from database.
-             * 
-             * Refresh dataGrid to update items list.
-             */
-        }
-
-        /// <summary>
-        /// This click event will save invoice to database
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnSaveInvoice_Click(object sender, RoutedEventArgs e)
-        {
-            /* This button will check all user input to make sure date and invoice number is there
-             * NOTE: if adding invoice then TBD is valid.
-             * If not valid or entered, messagebox will inform user.
-             * 
-             * All information controls are set to read only except for edit and delete.
-             * Edit and delete button become enabled.
-             * 
-             * All invoice and line items are added to database or updated line items in database.
-             */
-        }
-        /// <summary>
-        /// This load event will create dataset with necessary values for dropbox
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Grid_Loaded(object sender, RoutedEventArgs e)
-        {
-            /* Upon load updated datasource objects will be loaded and read into combobox.
-             * 
-             * Controls except for update search and add will be disabled.
-             */
+            if (searchWindow != null)
+            {
+                searchWindow.mainWindow = null;
+                searchWindow.Close();
+            }
         }
     }
 }
