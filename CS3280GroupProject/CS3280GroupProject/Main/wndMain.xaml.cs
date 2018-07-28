@@ -21,9 +21,36 @@ namespace CS3280GroupProject.Main
     /// </summary>
     public partial class wndMain : Window
     {
+        public wndSearch searchWindow;
+
         public wndMain()
         {
             InitializeComponent();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            //Top level error handling here
+            if(searchWindow == null)
+            {
+                searchWindow = new wndSearch(this);
+            }
+            this.Hide();
+            searchWindow.Show();
+            //Top level error handling here
+        }
+
+        /// <summary>
+        /// Closes all other windows
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (searchWindow != null) {
+                searchWindow.mainWindow = null;
+                searchWindow.Close();
+            }
         }
     }
 }
