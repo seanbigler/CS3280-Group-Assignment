@@ -21,6 +21,10 @@ namespace CS3280GroupProject.Main
     /// </summary>
     public partial class wndMain : Window
     {
+        #region Class Attributes
+        #endregion
+
+        #region Class Methods
         public wndMain()
         {
             InitializeComponent();
@@ -145,5 +149,6 @@ namespace CS3280GroupProject.Main
              * Controls except for update search and add will be disabled.
              */
         }
+        #endregion
     }
 }
