@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CS3280GroupProject.Items"
         mc:Ignorable="d"
-        Title="wndItem" Height="355.32" Width="569.149" Closing="Window_Closing">
+        Title="Invoice System - Edit Items" Height="355.32" Width="569.149" Closing="Window_Closing"
+        Icon="/Icons/diamond3.png">
     <Grid>
         <DataGrid Name="dgItems" HorizontalAlignment="Left" Height="254" Margin="20,52,0,0" VerticalAlignment="Top" Width="254" CurrentCellChanged="dgItems_CurrentCellChanged"/>
         <Label Content="Item Description:" HorizontalAlignment="Left" Margin="294,102,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right"/>

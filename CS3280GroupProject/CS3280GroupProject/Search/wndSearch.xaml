@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CS3280GroupProject.Search"
         mc:Ignorable="d" FontSize="16"
-        Title="Invoice System" Height="500" Width="670"
+        Title="Invoice System - Search" Height="500" Width="670"
                 Icon="/Icons/diamond3.png" MinWidth="670" MinHeight="500"
         Closing="Window_Closing">
     <Window.Resources>
