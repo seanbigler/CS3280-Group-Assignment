@@ -22,9 +22,11 @@ namespace CS3280GroupProject.Main
     public partial class wndMain : Window
     {
         #region Class Attributes
+        public wndSearch searchWindow;
         #endregion
 
         #region Class Methods
+
         public wndMain()
         {
             InitializeComponent();
@@ -47,7 +49,14 @@ namespace CS3280GroupProject.Main
         /// <param name="e"></param>
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            //Simple .Hide() and .ShowDialog() methods 
+            //Top level error handling here
+            if (searchWindow == null)
+            {
+                searchWindow = new wndSearch(this);
+            }
+            this.Hide();
+            searchWindow.Show();
+            //Top level error handling here
         }
 
         /// <summary>
@@ -148,6 +157,20 @@ namespace CS3280GroupProject.Main
              * 
              * Controls except for update search and add will be disabled.
              */
+        }
+
+        /// <summary>
+        /// Closes all other windows
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (searchWindow != null)
+            {
+                searchWindow.mainWindow = null;
+                searchWindow.Close();
+            }
         }
         #endregion
     }
