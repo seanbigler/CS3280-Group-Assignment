@@ -22,7 +22,14 @@ namespace CS3280GroupProject.Search
     public partial class wndSearch : Window
     {
         #region Attributes
+        /// <summary>
+        /// The invoice num that is selected from the search
+        /// </summary>
         private string sSelectedInvoiceNum;
+        /// <summary>
+        /// Reference to the main window
+        /// </summary>
+        public wndMain mainWindow;
 
         /// <summary>
         /// Used to get and set sSelectedInvoiceNum
@@ -45,11 +52,12 @@ namespace CS3280GroupProject.Search
         /// <summary>
         /// Initializes wndSearch
         /// </summary>
-        public wndSearch()
+        public wndSearch(wndMain main)
         {
             try
             {
                 InitializeComponent();
+                mainWindow = main;
             }
             catch (Exception ex)
             {
@@ -125,6 +133,7 @@ namespace CS3280GroupProject.Search
              * Hide this window
              */
             this.Hide();
+            mainWindow.Show();
         }
 
         /// <summary>
@@ -156,6 +165,21 @@ namespace CS3280GroupProject.Search
              * Hide this window
              */
             this.Hide();
+            mainWindow.Show();
+        }
+
+        /// <summary>
+        /// Opens the main window back up after closing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (mainWindow != null)
+            {
+                mainWindow.searchWindow = null;
+                mainWindow.Show();
+            }
         }
         #endregion
     }
