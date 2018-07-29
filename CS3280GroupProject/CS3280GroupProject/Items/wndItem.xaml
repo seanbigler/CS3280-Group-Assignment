@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CS3280GroupProject.Items"
         mc:Ignorable="d"
-        Title="wndItem" Height="355.32" Width="569.149">
+        Title="wndItem" Height="355.32" Width="569.149" Closing="Window_Closing">
     <Grid>
-        <DataGrid Name="dgItems" HorizontalAlignment="Left" Height="267" Margin="20,39,0,0" VerticalAlignment="Top" Width="254" CurrentCellChanged="dgItems_CurrentCellChanged"/>
+        <DataGrid Name="dgItems" HorizontalAlignment="Left" Height="254" Margin="20,52,0,0" VerticalAlignment="Top" Width="254" CurrentCellChanged="dgItems_CurrentCellChanged"/>
         <Label Content="Item Description:" HorizontalAlignment="Left" Margin="294,102,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right"/>
         <TextBox x:Name="txtDescription" HorizontalAlignment="Left" Height="23" Margin="415,106,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Label Content="Cost:" HorizontalAlignment="Left" Margin="294,140,0,0" VerticalAlignment="Top" Width="100" HorizontalContentAlignment="Right"/>
@@ -18,6 +18,6 @@
         <Button x:Name="btnDelete" Content="Delete" HorizontalAlignment="Left" Margin="460,259,0,0" VerticalAlignment="Top" Width="75" Click="btnDelete_Click"/>
         <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="460,203,0,0" VerticalAlignment="Top" Width="75" Click="btnUpdate_Click"/>
         <TextBlock Text="Edit Items" Grid.Column="0" 
-            Grid.Row="0" FontSize="20" Padding="15,5,15,5" Margin="0,0,0,290" Background="#FF2672EC" Foreground="White"/>
+            Grid.Row="0" FontSize="20" Padding="15,5,15,5" Margin="0,0,0,287" Background="#FF2672EC" Foreground="White"/>
     </Grid>
 </Window>

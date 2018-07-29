@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,9 +21,24 @@ namespace CS3280GroupProject.Items
     /// </summary>
     public partial class wndItem : Window
     {
-        public wndItem()
+
+        public wndMain mainWindow;
+
+
+        public wndItem(wndMain main)
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+                mainWindow = main;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " ->" + ex.Message);
+            }
+
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -61,6 +77,15 @@ namespace CS3280GroupProject.Items
             /*When cell is changed, text boxes will fill with corresponding data from
              * selected row
              */
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (mainWindow != null)
+            {
+                mainWindow.itemWindow = null;
+                mainWindow.Show();
+            }
         }
     }
 }

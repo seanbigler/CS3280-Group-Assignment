@@ -23,6 +23,7 @@ namespace CS3280GroupProject.Main
     {
         #region Class Attributes
         public wndSearch searchWindow;
+        public wndItem itemWindow;
         #endregion
 
         #region Class Methods
@@ -39,7 +40,13 @@ namespace CS3280GroupProject.Main
         /// <param name="e"></param>
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            //Simple .Hide() and .ShowDialog() methods 
+            //Simple .Hide() and .ShowDialog() methods
+            if (itemWindow == null)
+            {
+                itemWindow = new wndItem(this);
+            }
+            this.Hide();
+            itemWindow.Show();
         }
 
         /// <summary>
