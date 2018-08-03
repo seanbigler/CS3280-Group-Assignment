@@ -10,17 +10,23 @@ using System.Reflection;
 
 namespace CS3280GroupProject
 {
+    /// <summary>
+    /// Class with all methods for accessing the database
+    /// </summary>
     class clsDataAccess
     {
+        #region Attributes
         /// <summary>
         /// Connection string to the database.
         /// </summary>
         private string sConnectionString;
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Constructor that sets the connection string to the database
         /// </summary>
-		public clsDataAccess()
+        public clsDataAccess()
         {
             try
             {
@@ -158,5 +164,6 @@ namespace CS3280GroupProject
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
+        #endregion
     }
 }

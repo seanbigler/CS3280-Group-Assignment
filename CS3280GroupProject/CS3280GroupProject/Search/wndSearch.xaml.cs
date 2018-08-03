@@ -36,6 +36,27 @@ namespace CS3280GroupProject.Search
         /// </summary>
         private clsSearchLogic searchLogic;
         /// <summary>
+        /// Boolean to show if an invoiceNum is selected
+        /// </summary>
+        private bool isNumFiltered;
+        /// <summary>
+        /// Boolean to show if an invoiceDate is selected
+        /// </summary>
+        private bool isDateFiltered;
+        /// <summary>
+        /// Boolean to show if an invoiceTotal is selected
+        /// </summary>
+        private bool isTotalFiltered;
+        /// <summary>
+        /// Boolean to show if an invoiceDate and invoiceTotal is selected
+        /// </summary>
+        private bool isDateTotalFiltered;
+        /// <summary>
+        /// Boolean to show if the window is in the process of reseting to initial state
+        /// </summary>
+        private bool isClearing;
+
+        /// <summary>
         /// Used to get and set sSelectedInvoiceNum
         /// </summary>
         public string SelectedInvoiceNum
@@ -49,7 +70,6 @@ namespace CS3280GroupProject.Search
                 sSelectedInvoiceNum = value;
             }*/
         }
-
         #endregion
 
         #region Methods
@@ -77,34 +97,44 @@ namespace CS3280GroupProject.Search
         /// </summary>
         private void Start()
         {
-            /*
-             * TODO: 
-             * Clear CBInvoiceNum and refill options
-             * Clear CBInvoiceDate and refill options
-             * Clear CBTotal and refill options
-             * Reset DGInvoices
-             */
-            CBInvoiceNum.Items.Clear();
-            CBInvoiceDate.Items.Clear();
-            CBTotal.Items.Clear();
-            DGInvoices.Items.Clear();
-
-            List<string> tempNums = searchLogic.GetAllInvoiceNums();
-            foreach(string item in tempNums)
+            try
             {
-                CBInvoiceNum.Items.Add(item);
+                isClearing = true;
+                isNumFiltered = false;
+                isDateFiltered = false;
+                isTotalFiltered = false;
+                isDateTotalFiltered = false;
+
+                CBInvoiceNum.Items.Clear();
+                CBInvoiceDate.Items.Clear();
+                CBTotal.Items.Clear();
+
+                List<string> tempNums = searchLogic.GetAllInvoiceNums();
+                foreach (string item in tempNums)
+                {
+                    CBInvoiceNum.Items.Add(item);
+                }
+
+                List<string> tempDates = searchLogic.GetAllInvoiceDates();
+                foreach (string item in tempDates)
+                {
+                    CBInvoiceDate.Items.Add(item);
+                }
+
+                List<string> tempTotals = searchLogic.GetAllInvoiceTotals();
+                foreach (string item in tempTotals)
+                {
+                    CBTotal.Items.Add(item);
+                }
+
+                DataSet tempDataSet = searchLogic.GetAllInvoices();
+                DGInvoices.ItemsSource = tempDataSet.Tables[0].DefaultView;
+                isClearing = false;
             }
-
-            List<string> tempDates = searchLogic.GetAllInvoiceDates();
-            foreach(string item in tempDates)
+            catch (Exception ex)
             {
-                CBInvoiceDate.Items.Add(item);
-            }
-
-            List<string> tempTotals = searchLogic.GetAllInvoiceTotals();
-            foreach(string item in tempTotals)
-            {
-                CBTotal.Items.Add(item);
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " ->" + ex.Message);
             }
         }
 
@@ -115,11 +145,68 @@ namespace CS3280GroupProject.Search
         /// <param name="e"></param>
         private void CBInvoiceNum_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            /*
-             * TODO: 
-             * Filter DGInvoices per selection 
-             * Filter other CB
-             */
+            try
+            {
+                if (!isClearing)
+                {
+                    isNumFiltered = true;
+                    isDateFiltered = false;
+                    isTotalFiltered = false;
+
+                    string tempDate = "";
+                    string tempTotal = "";
+                    if (CBInvoiceDate.SelectedItem != null)
+                    {
+                        tempDate = CBInvoiceDate.SelectedItem.ToString();
+                    }
+                    if (CBTotal.SelectedItem != null)
+                    {
+                        tempTotal = CBTotal.SelectedItem.ToString();
+                    }
+
+                    CBInvoiceDate.Items.Clear();
+                    CBTotal.Items.Clear();
+
+                    List<string> tempDates = searchLogic.GetInvoiceDateWithNum(CBInvoiceNum.SelectedItem.ToString());
+                    foreach (string item in tempDates)
+                    {
+                        CBInvoiceDate.Items.Add(item);
+                    }
+
+                    List<string> tempTotals = searchLogic.GetInvoiceTotalWithNum(CBInvoiceNum.SelectedItem.ToString());
+                    foreach (string item in tempTotals)
+                    {
+                        CBTotal.Items.Add(item);
+                    }
+
+                    DataSet tempDataSet = searchLogic.GetAllInvoicesWithNum(CBInvoiceNum.SelectedItem.ToString());
+                    DGInvoices.ItemsSource = tempDataSet.Tables[0].DefaultView;
+
+                    isClearing = true;
+                    if(tempDate != "")
+                    {
+                        CBInvoiceDate.SelectedItem = tempDate;
+                    }
+                    else
+                    {
+                        CBInvoiceDate.SelectedIndex = 0;
+                    }
+                    if(tempTotal != "")
+                    {
+                        CBTotal.SelectedItem = tempTotal;
+                    }
+                    else
+                    {
+                        CBTotal.SelectedIndex = 0;
+                    }
+                    isClearing = false;
+                }
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -129,11 +216,72 @@ namespace CS3280GroupProject.Search
         /// <param name="e"></param>
         private void CBInvoiceDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            /*
-             * TODO: 
-             * Filter DGInvoices per selection 
-             * Filter other CB
-             */
+            try
+            {
+                if (!isClearing && !isNumFiltered)
+                {
+                    if (isTotalFiltered)//filtered by date and total
+                    {
+                        isDateFiltered = true;
+
+                        CBInvoiceNum.Items.Clear();
+
+                        List<string> tempNums = searchLogic.GetInvoiceNumsWithDateTotal(CBInvoiceDate.SelectedItem.ToString(), CBTotal.SelectedItem.ToString());
+                        foreach (string item in tempNums)
+                        {
+                            CBInvoiceNum.Items.Add(item);
+                        }
+
+                        DataSet tempDataSet = searchLogic.GetAllInvoicesWithDateTotal(CBInvoiceDate.SelectedItem.ToString(), CBTotal.SelectedItem.ToString());
+                        DGInvoices.ItemsSource = tempDataSet.Tables[0].DefaultView;
+
+                        if (!isDateTotalFiltered) {
+                            isClearing = true;
+                            isDateTotalFiltered = true;
+
+                            string tempTotal = CBTotal.SelectedItem.ToString();
+
+                            CBTotal.Items.Clear();
+
+                            List<string> tempTotals = searchLogic.GetInvoiceTotalWithDate(CBInvoiceDate.SelectedItem.ToString());
+                            foreach (string item in tempTotals)
+                            {
+                                CBTotal.Items.Add(item);
+                            }
+
+                            CBTotal.SelectedItem = tempTotal;
+                            isClearing = false;
+                        }
+                    }
+                    else//Filtered by date
+                    {
+                        isDateFiltered = true;
+
+                        CBInvoiceNum.Items.Clear();
+                        CBTotal.Items.Clear();
+
+                        List<string> tempNums = searchLogic.GetInvoiceNumsWithDate(CBInvoiceDate.SelectedItem.ToString());
+                        foreach (string item in tempNums)
+                        {
+                            CBInvoiceNum.Items.Add(item);
+                        }
+
+                        List<string> tempTotals = searchLogic.GetInvoiceTotalWithDate(CBInvoiceDate.SelectedItem.ToString());
+                        foreach (string item in tempTotals)
+                        {
+                            CBTotal.Items.Add(item);
+                        }
+
+                        DataSet tempDataSet = searchLogic.GetAllInvoicesWithDate(CBInvoiceDate.SelectedItem.ToString());
+                        DGInvoices.ItemsSource = tempDataSet.Tables[0].DefaultView;
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -143,11 +291,73 @@ namespace CS3280GroupProject.Search
         /// <param name="e"></param>
         private void CBTotal_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            /*
-             * TODO: 
-             * Filter DGInvoices per selection 
-             * Filter other CB
-             */
+            try
+            {
+                if (!isClearing && !isNumFiltered)
+                {
+                    if (isDateFiltered)//filtered by date and total
+                    {
+                        isTotalFiltered = true;
+
+                        CBInvoiceNum.Items.Clear();
+
+                        List<string> tempNums = searchLogic.GetInvoiceNumsWithDateTotal(CBInvoiceDate.SelectedItem.ToString(), CBTotal.SelectedItem.ToString());
+                        foreach (string item in tempNums)
+                        {
+                            CBInvoiceNum.Items.Add(item);
+                        }
+
+                        DataSet tempDataSet = searchLogic.GetAllInvoicesWithDateTotal(CBInvoiceDate.SelectedItem.ToString(), CBTotal.SelectedItem.ToString());
+                        DGInvoices.ItemsSource = tempDataSet.Tables[0].DefaultView;
+
+                        if (!isDateTotalFiltered)
+                        {
+                            isClearing = true;
+                            isDateTotalFiltered = true;
+
+                            string tempDate = CBInvoiceDate.SelectedItem.ToString();
+
+                            CBInvoiceDate.Items.Clear();
+
+                            List<string> tempDates = searchLogic.GetInvoiceDateWithTotal(CBTotal.SelectedItem.ToString());
+                            foreach (string item in tempDates)
+                            {
+                                CBInvoiceDate.Items.Add(item);
+                            }
+
+                            CBInvoiceDate.SelectedItem = tempDate;
+                            isClearing = false;
+                        }
+                    }
+                    else//Filtered by total
+                    {
+                        isTotalFiltered = true;
+
+                        CBInvoiceNum.Items.Clear();
+                        CBInvoiceDate.Items.Clear();
+
+                        List<string> tempNums = searchLogic.GetInvoiceNumsWithTotal(CBTotal.SelectedItem.ToString());
+                        foreach (string item in tempNums)
+                        {
+                            CBInvoiceNum.Items.Add(item);
+                        }
+
+                        List<string> tempDates = searchLogic.GetInvoiceDateWithTotal(CBTotal.SelectedItem.ToString());
+                        foreach (string item in tempDates)
+                        {
+                            CBInvoiceDate.Items.Add(item);
+                        }
+
+                        DataSet tempDataSet = searchLogic.GetAllInvoicesWithTotal(CBTotal.SelectedItem.ToString());
+                        DGInvoices.ItemsSource = tempDataSet.Tables[0].DefaultView;
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -157,7 +367,15 @@ namespace CS3280GroupProject.Search
         /// <param name="e"></param>
         private void DGInvoices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //Possibly not needed
+            try
+            {
+                //Possibly not needed
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -167,15 +385,20 @@ namespace CS3280GroupProject.Search
         /// <param name="e"></param>
         private void BtnSelect_Click(object sender, RoutedEventArgs e)
         {
-            /*
-             * TODO: 
-             * Check for selected invoice
-             * Set the sSelectedInvoiceNum with a property that the wndMain can access
-             * Reset all visible data to default
-             * Hide this window
-             */
-            this.Hide();
-            mainWindow.Show();
+            try
+            {
+                //System.Windows.MessageBox.Show(((DataRowView)DGInvoices.SelectedValue).Row[0].ToString());
+                sSelectedInvoiceNum = ((DataRowView)DGInvoices.SelectedValue).Row[0].ToString();
+
+                Start();
+                this.Hide();
+                mainWindow.Show();
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -185,7 +408,15 @@ namespace CS3280GroupProject.Search
         /// <param name="e"></param>
         private void BtnClear_Click(object sender, RoutedEventArgs e)
         {
-            Start();
+            try
+            {
+                Start();
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -195,13 +426,18 @@ namespace CS3280GroupProject.Search
         /// <param name="e"></param>
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
-            /*
-             * TODO: 
-             * Reset all visible data to default
-             * Hide this window
-             */
-            this.Hide();
-            mainWindow.Show();
+            try
+            {
+                sSelectedInvoiceNum = "";
+                Start();
+                this.Hide();
+                mainWindow.Show();
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -211,10 +447,36 @@ namespace CS3280GroupProject.Search
         /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (mainWindow != null)
+            try
             {
-                mainWindow.searchWindow = null;
-                mainWindow.Show();
+                if (mainWindow != null)
+                {
+                    mainWindow.searchWindow = null;
+                    mainWindow.Show();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// exception handler that shows the error
+        /// </summary>
+        /// <param name="sClass">the class</param>
+        /// <param name="sMethod">the method</param>
+        /// <param name="sMessage">the error message</param>
+        private void HandleError(string sClass, string sMethod, string sMessage)
+        {
+            try
+            {
+                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
+            }
+            catch (System.Exception ex)
+            {
+                System.IO.File.AppendAllText("C:\\Error.txt", Environment.NewLine + "HandleError Exception: " + ex.Message);
             }
         }
         #endregion
