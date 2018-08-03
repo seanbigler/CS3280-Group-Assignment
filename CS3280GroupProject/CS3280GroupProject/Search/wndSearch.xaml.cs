@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -30,7 +31,10 @@ namespace CS3280GroupProject.Search
         /// Reference to the main window
         /// </summary>
         public wndMain mainWindow;
-
+        /// <summary>
+        /// Contains the logic for the search window
+        /// </summary>
+        private clsSearchLogic searchLogic;
         /// <summary>
         /// Used to get and set sSelectedInvoiceNum
         /// </summary>
@@ -58,11 +62,49 @@ namespace CS3280GroupProject.Search
             {
                 InitializeComponent();
                 mainWindow = main;
+                searchLogic = new clsSearchLogic();
+                Start();
             }
             catch (Exception ex)
             {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
                                     MethodInfo.GetCurrentMethod().Name + " ->" + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Initializes all comboboxes and the datagrid
+        /// </summary>
+        private void Start()
+        {
+            /*
+             * TODO: 
+             * Clear CBInvoiceNum and refill options
+             * Clear CBInvoiceDate and refill options
+             * Clear CBTotal and refill options
+             * Reset DGInvoices
+             */
+            CBInvoiceNum.Items.Clear();
+            CBInvoiceDate.Items.Clear();
+            CBTotal.Items.Clear();
+            DGInvoices.Items.Clear();
+
+            List<string> tempNums = searchLogic.GetAllInvoiceNums();
+            foreach(string item in tempNums)
+            {
+                CBInvoiceNum.Items.Add(item);
+            }
+
+            List<string> tempDates = searchLogic.GetAllInvoiceDates();
+            foreach(string item in tempDates)
+            {
+                CBInvoiceDate.Items.Add(item);
+            }
+
+            List<string> tempTotals = searchLogic.GetAllInvoiceTotals();
+            foreach(string item in tempTotals)
+            {
+                CBTotal.Items.Add(item);
             }
         }
 
@@ -143,13 +185,7 @@ namespace CS3280GroupProject.Search
         /// <param name="e"></param>
         private void BtnClear_Click(object sender, RoutedEventArgs e)
         {
-            /*
-             * TODO: 
-             * Clear CBInvoiceNum and refill options
-             * Clear CBInvoiceDate and refill options
-             * Clear CBTotal and refill options
-             * Reset DGInvoices
-             */
+            Start();
         }
 
         /// <summary>
