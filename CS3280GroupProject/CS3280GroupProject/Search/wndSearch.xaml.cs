@@ -153,17 +153,6 @@ namespace CS3280GroupProject.Search
                     isDateFiltered = false;
                     isTotalFiltered = false;
 
-                    string tempDate = "";
-                    string tempTotal = "";
-                    if (CBInvoiceDate.SelectedItem != null)
-                    {
-                        tempDate = CBInvoiceDate.SelectedItem.ToString();
-                    }
-                    if (CBTotal.SelectedItem != null)
-                    {
-                        tempTotal = CBTotal.SelectedItem.ToString();
-                    }
-
                     CBInvoiceDate.Items.Clear();
                     CBTotal.Items.Clear();
 
@@ -181,25 +170,6 @@ namespace CS3280GroupProject.Search
 
                     DataSet tempDataSet = searchLogic.GetAllInvoicesWithNum(CBInvoiceNum.SelectedItem.ToString());
                     DGInvoices.ItemsSource = tempDataSet.Tables[0].DefaultView;
-
-                    isClearing = true;
-                    if(tempDate != "")
-                    {
-                        CBInvoiceDate.SelectedItem = tempDate;
-                    }
-                    else
-                    {
-                        CBInvoiceDate.SelectedIndex = 0;
-                    }
-                    if(tempTotal != "")
-                    {
-                        CBTotal.SelectedItem = tempTotal;
-                    }
-                    else
-                    {
-                        CBTotal.SelectedIndex = 0;
-                    }
-                    isClearing = false;
                 }
             }
             catch (System.Exception ex)
