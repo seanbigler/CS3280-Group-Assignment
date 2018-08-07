@@ -1,5 +1,7 @@
-﻿using System;
+﻿using CS3280GroupProject.Search;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -20,7 +22,7 @@ namespace CS3280GroupProject.Items
             clsDA = new clsDataAccess();
 
         }
-
+        /*
         public DataSet getItems()
         {
             string sSQL = clsSQL.GetAllItems();
@@ -29,6 +31,23 @@ namespace CS3280GroupProject.Items
             ds = clsDA.ExecuteSQLStatement(sSQL, ref iRet);
 
             return ds;
+        }
+        */
+        public ObservableCollection<clsItem> getItems()
+        {
+            string sSQL = clsSQL.GetAllItems();
+            int iRet = 0;
+
+            ds = clsDA.ExecuteSQLStatement(sSQL, ref iRet);
+
+            ObservableCollection<clsItem> ItemList = new ObservableCollection<clsItem>();
+
+            foreach(DataRow dr in ds.Tables[0].Rows)
+            {
+                ItemList.Add(new clsItem { sItemCode = dr[0].ToString(), sItemDesc = dr[1].ToString(), sCost = dr[2].ToString() });
+            }
+
+            return ItemList;
         }
     }
 

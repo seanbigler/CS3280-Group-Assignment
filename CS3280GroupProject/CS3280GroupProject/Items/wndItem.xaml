@@ -8,11 +8,11 @@
         Title="Invoice System - Edit Items" Height="355.32" Width="569.149" Closing="Window_Closing"
         Icon="/Icons/diamond3.png">
     <Grid>
-        <DataGrid Name="dgItems" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="254" Margin="20,52,0,0" VerticalAlignment="Top" Width="260" CurrentCellChanged="dgItems_CurrentCellChanged" IsReadOnly="True">
+        <DataGrid Name="dgItems" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="254" Margin="20,52,0,0" VerticalAlignment="Top" Width="260" SelectionChanged="dgItems_SelectionChanged" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Code" Binding="{Binding Path=ItemCode}" Width="40"></DataGridTextColumn>
-                <DataGridTextColumn Header="Description" Binding="{Binding Path=ItemDesc}" Width="1*"></DataGridTextColumn>
-                <DataGridTextColumn Header="Cost" Binding="{Binding Path=Cost}" Width="40"></DataGridTextColumn>
+                <DataGridTextColumn Header="Code" Binding="{Binding Path=sItemCode}" Width="40"></DataGridTextColumn>
+                <DataGridTextColumn Header="Description" Binding="{Binding Path=sItemDesc}" Width="1*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Cost" Binding="{Binding Path=sCost}" Width="40"></DataGridTextColumn>
 
             </DataGrid.Columns>
         </DataGrid>

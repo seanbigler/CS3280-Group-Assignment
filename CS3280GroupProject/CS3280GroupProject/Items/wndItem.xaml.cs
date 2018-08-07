@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CS3280GroupProject.Main;
+using CS3280GroupProject.Search;
 
 namespace CS3280GroupProject.Items
 {
@@ -35,15 +36,13 @@ namespace CS3280GroupProject.Items
                 mainWindow = main;
                 clsIL = new clsItemsLogic();
 
-                dgItems.ItemsSource = clsIL.getItems().Tables[0].DefaultView;
-                //dgItems.Columns[0].Header = "Item Code";
-                //dgItems.Columns[1].Header = "Description";
+                dgItems.ItemsSource = clsIL.getItems();
 
             }
             catch (Exception ex)
             {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-                                    MethodInfo.GetCurrentMethod().Name + " ->" + ex.Message);
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
 
         }
@@ -89,15 +88,34 @@ namespace CS3280GroupProject.Items
             }
         }
 
-        private void dgItems_CurrentCellChanged(object sender, EventArgs e)
+        private void dgItems_SelectionChanged(object sender, EventArgs e)
         {
             /*When cell is changed, text boxes will fill with corresponding data from
              * selected row
              */
-            //int iRowNum = dgItems.SelectedCells[0].Column.DisplayIndex;
+             try
+            {
+                //int iRowNum = dgItems.SelectedCells[0].Column.DisplayIndex;
 
 
-            //txtCode.Text = dgItems.SelectedItem.ToString();
+                //txtCode.Text = dgItems.SelectedItem.ToString();
+                if (dgItems.SelectedItem != null)
+                {
+                    txtCode.Text = ((clsItem)dgItems.SelectedItem).sItemCode.ToString();
+                    txtDescription.Text = ((clsItem)dgItems.SelectedItem).sItemDesc.ToString();
+                    txtCost.Text = ((clsItem)dgItems.SelectedItem).sCost.ToString();
+                }
+
+                //txtCode.Text = ((clsItem)dgItems.SelectedItem).sItemCode.ToString();
+
+
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+            
 
 
         }
@@ -108,6 +126,24 @@ namespace CS3280GroupProject.Items
             {
                 mainWindow.itemWindow = null;
                 mainWindow.Show();
+            }
+        }
+
+        /// <summary>
+        /// Displays errors in Message Box
+        /// </summary>
+        /// <param name="sClass">Class name</param>
+        /// <param name="sMethod">Method name</param>
+        /// <param name="sMessage">Error Message</param>
+        private void HandleError(string sClass, string sMethod, string sMessage)
+        {
+            try
+            {
+                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
+            }
+            catch (System.Exception ex)
+            {
+                System.IO.File.AppendAllText(@"C:\Error.txt", Environment.NewLine + "HandleError Exception: " + ex.Message);
             }
         }
     }
