@@ -49,11 +49,33 @@ namespace CS3280GroupProject.Items
 
             return ItemList;
         }
+
+        //Function to Update item
+        public bool updateItem(string sCode, string sDesc, string sCost)
+        {
+            int iCost;
+            int iRet;
+            bool validCost = false;
+
+            validCost = Int32.TryParse(sCost, out iCost);
+
+            if(validCost)
+            {
+                string sSQL = clsSQL.UpdateItem(sCode, sDesc, iCost);
+                iRet = clsDA.ExecuteNonQuery(sSQL);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        //Function to Add Item
+
+        //Function to Delete Item
     }
 
-    //Function to Update item
 
-    //Function to Add Item
-
-    //Function to Delete Item
 }

@@ -55,6 +55,15 @@ namespace CS3280GroupProject.Items
              * Error checking to make sure all boxes have input, all inputs are valid, and that
              * contents of txtCode does not already exist as a key in ItemDesc
              */
+             try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -64,6 +73,15 @@ namespace CS3280GroupProject.Items
              * Error checking to make sure a row is selected and selected item is not on any
              * existing invoice
              */
+             try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
 
         }
 
@@ -77,14 +95,35 @@ namespace CS3280GroupProject.Items
              * Error checking to make sure a valid row is selected, all boxes (txtDescription and txtCost) 
              * have input, and that all inputs are valid
              */
+            try
+            {
+                if (txtDescription.Text == "" || txtCost.Text == "")
+                {
+                    //Invalid input
+                    MessageBox.Show("Please enter text in both Item Description and Cost boxes.");
 
-            if(txtDescription.Text == "" || txtCost.Text == "")
-            {
-                //Invalid input
+                }
+                else
+                {
+                    //Call function to check if cost is valid number
+                    bool valid = clsIL.updateItem(((clsItem)dgItems.SelectedItem).sItemCode.ToString(), txtDescription.Text, txtCost.Text);
+                    if(!valid)
+                    {
+                        //Cost not a number
+                        MessageBox.Show("Invalid value for Cost. Try again.");
+                    }
+                    else
+                    {
+                        dgItems.ItemsSource = null;
+                        dgItems.ItemsSource = clsIL.getItems();
+                    }
+
+                }
             }
-            else
+            catch (Exception ex)
             {
-                //Call function to check if cost is valid number
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
 
@@ -122,10 +161,20 @@ namespace CS3280GroupProject.Items
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (mainWindow != null)
+            try
             {
-                mainWindow.itemWindow = null;
-                mainWindow.Show();
+
+
+                if (mainWindow != null)
+                {
+                    mainWindow.itemWindow = null;
+                    mainWindow.Show();
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
 
