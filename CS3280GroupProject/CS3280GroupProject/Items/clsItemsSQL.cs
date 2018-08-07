@@ -38,7 +38,7 @@ namespace CS3280GroupProject.Items
         {
             try
             {
-                string sSQL = "INSERT INTO ItemDesc" +
+                string sSQL = "INSERT INTO ItemDesc " +
                               "VALUES ('" + itemID + "', '" + itemDesc + "', " + cost + ");";
                 return sSQL;
             }
@@ -59,9 +59,9 @@ namespace CS3280GroupProject.Items
         {
             try
             {
-                string sSQL = "UPDATE ItemDesc"+
+                string sSQL = "UPDATE ItemDesc "+
                               "SET ItemDesc = '" + itemDesc + "', Cost = " + cost +
-                              "WHERE ItemCode = '" + itemID + "'; ";
+                              " WHERE ItemCode = '" + itemID + "'; ";
                 return sSQL;
             }
             catch (Exception ex)
@@ -79,7 +79,7 @@ namespace CS3280GroupProject.Items
         {
             try
             {
-                string sSQL = "DELETE FROM ItemDesc" +
+                string sSQL = "DELETE FROM ItemDesc " +
                               "WHERE ItemCode = '" + itemID + "';";
                 return sSQL;
             }
@@ -98,9 +98,9 @@ namespace CS3280GroupProject.Items
         {
             try
             {
-                string sSQL = "SELECT DISTINCT InvoiceNum" +
-                              "FROM ItemDesc id INNER JOIN LineItems li" +
-                              "ON id.ItemCode = li.ItemCode" +
+                string sSQL = "SELECT DISTINCT InvoiceNum " +
+                              "FROM ItemDesc id INNER JOIN LineItems li " +
+                              "ON id.ItemCode = li.ItemCode " +
                               "WHERE li.ItemCode = '" + itemID + "';";
                 return sSQL;
             }
