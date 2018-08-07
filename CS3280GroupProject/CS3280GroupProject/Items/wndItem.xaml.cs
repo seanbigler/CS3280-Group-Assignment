@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -23,6 +24,7 @@ namespace CS3280GroupProject.Items
     {
 
         public wndMain mainWindow;
+        clsItemsLogic clsIL;
 
 
         public wndItem(wndMain main)
@@ -31,6 +33,11 @@ namespace CS3280GroupProject.Items
             {
                 InitializeComponent();
                 mainWindow = main;
+                clsIL = new clsItemsLogic();
+
+                dgItems.ItemsSource = clsIL.getItems().Tables[0].DefaultView;
+                //dgItems.Columns[0].Header = "Item Code";
+                //dgItems.Columns[1].Header = "Description";
 
             }
             catch (Exception ex)
@@ -58,6 +65,7 @@ namespace CS3280GroupProject.Items
              * Error checking to make sure a row is selected and selected item is not on any
              * existing invoice
              */
+
         }
 
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
@@ -70,6 +78,15 @@ namespace CS3280GroupProject.Items
              * Error checking to make sure a valid row is selected, all boxes (txtDescription and txtCost) 
              * have input, and that all inputs are valid
              */
+
+            if(txtDescription.Text == "" || txtCost.Text == "")
+            {
+                //Invalid input
+            }
+            else
+            {
+                //Call function to check if cost is valid number
+            }
         }
 
         private void dgItems_CurrentCellChanged(object sender, EventArgs e)
@@ -77,6 +94,12 @@ namespace CS3280GroupProject.Items
             /*When cell is changed, text boxes will fill with corresponding data from
              * selected row
              */
+            //int iRowNum = dgItems.SelectedCells[0].Column.DisplayIndex;
+
+
+            //txtCode.Text = dgItems.SelectedItem.ToString();
+
+
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
