@@ -179,6 +179,12 @@ namespace CS3280GroupProject.Main
                 searchWindow.Close();
             }
         }
+        /// <summary>
+        /// Top level error handler to catch thrown exceptions
+        /// </summary>
+        private void ErrorHandler() {
+
+        }
         #endregion
     }
 }
