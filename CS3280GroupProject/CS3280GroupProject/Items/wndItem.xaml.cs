@@ -176,27 +176,34 @@ namespace CS3280GroupProject.Items
              */
             try
             {
-                if (txtDescription.Text == "" || txtCost.Text == "")
+                if (dgItems.SelectedIndex != -1)
                 {
-                    //Invalid input
-                    MessageBox.Show("Please enter text in both Item Description and Cost boxes.");
+                    int iSelected = dgItems.SelectedIndex;
 
-                }
-                else
-                {
-                    //Call function to check if cost is valid number
-                    bool valid = clsIL.updateItem(((clsItem)dgItems.SelectedItem).sItemCode.ToString(), txtDescription.Text, txtCost.Text);
-                    if(!valid)
+                    if (txtDescription.Text == "" || txtCost.Text == "")
                     {
-                        //Cost not a number
-                        MessageBox.Show("Invalid value for Cost. Try again.");
+                        //Invalid input
+                        MessageBox.Show("Please enter text in both Item Description and Cost boxes.");
+
                     }
                     else
                     {
-                        dgItems.ItemsSource = null;
-                        dgItems.ItemsSource = clsIL.getItems();
-                    }
+                        //Call function to check if cost is valid number
+                        bool valid = clsIL.updateItem(((clsItem)dgItems.SelectedItem).sItemCode.ToString(), txtDescription.Text, txtCost.Text);
+                        if (!valid)
+                        {
+                            //Cost not a number
+                            MessageBox.Show("Invalid value for Cost. Try again.");
+                        }
+                        else
+                        {
+                            dgItems.ItemsSource = null;
+                            dgItems.ItemsSource = clsIL.getItems();
+                        }
 
+                        dgItems.SelectedIndex = iSelected;
+
+                    }
                 }
             }
             catch (Exception ex)
