@@ -104,6 +104,36 @@ namespace CS3280GroupProject.Items
         }
 
         //Function to Delete Item
+        public bool deleteItem(string sCode, ref List<string> invoices)
+        {
+            int iRet = 1;
+
+            string sSQL = clsSQL.FindItemsOnInvoices(sCode);
+
+            ds = clsDA.ExecuteSQLStatement(sSQL, ref iRet);
+
+            //If not on invoice
+            if(iRet == 0)
+            {
+                sSQL = clsSQL.DeleteItem(sCode);
+                clsDA.ExecuteNonQuery(sSQL);
+
+                return false;
+            }
+            else
+            {
+                //Pass List of invoices back go window
+                List<string> invoiceList = new List<string>();
+                foreach(DataRow dr in ds.Tables[0].Rows)
+                {
+                    invoiceList.Add(dr[0].ToString());
+                }
+
+                invoices = invoiceList;
+
+                return true;
+            }
+        }
     }
 
 
