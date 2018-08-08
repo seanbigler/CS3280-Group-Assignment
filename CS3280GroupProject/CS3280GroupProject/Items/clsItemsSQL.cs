@@ -12,7 +12,7 @@ namespace CS3280GroupProject.Items
         /// <summary>
         /// Retrieves the entire ItemDesc table
         /// </summary>
-        /// <returns></returns>
+        /// <returns>SQL select statement</returns>
         public string GetAllItems()
         {
             try
@@ -33,7 +33,7 @@ namespace CS3280GroupProject.Items
         /// <param name="itemID">new item ID (confirmed not exists by business logic)</param>
         /// <param name="itemDesc">new item description</param>
         /// <param name="cost">new item cost</param>
-        /// <returns></returns>
+        /// <returns>SQL insert statement</returns>
         public string AddItem(string itemID, string itemDesc, int cost)
         {
             try
@@ -54,7 +54,7 @@ namespace CS3280GroupProject.Items
         /// <param name="itemID">itemCode of item to be updated</param>
         /// <param name="itemDesc">updated description</param>
         /// <param name="cost">updated cost</param>
-        /// <returns></returns>
+        /// <returns>SQL update statement</returns>
         public string UpdateItem(string itemID, string itemDesc, int cost)
         {
             try
@@ -74,7 +74,7 @@ namespace CS3280GroupProject.Items
         /// Deletes the row in ItemDesc corresponding to itemID
         /// </summary>
         /// <param name="itemID">ItemCode of item to be deleted</param>
-        /// <returns></returns>
+        /// <returns>SQL delete statement</returns>
         public string DeleteItem(string itemID)
         {
             try
@@ -93,7 +93,7 @@ namespace CS3280GroupProject.Items
         /// Selects InvoiceNum for all invoices containing a desired ItemCode
         /// </summary>
         /// <param name="itemID">ItemCode of desired item</param>
-        /// <returns></returns>
+        /// <returns>SQL select statement</returns>
         public string FindItemsOnInvoices(string itemID)
         {
             try
@@ -111,6 +111,11 @@ namespace CS3280GroupProject.Items
             }
         }
 
+        /// <summary>
+        /// Selects ItemCode for all Items that match the desired ItemCode (Determines if ItemCode exists)
+        /// </summary>
+        /// <param name="itemID">Item code</param>
+        /// <returns>SQL select statement</returns>
         public string FindItemWithCode(string itemID)
         {
             try

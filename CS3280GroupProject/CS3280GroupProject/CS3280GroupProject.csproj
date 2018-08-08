@@ -60,6 +60,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InvoiceDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Items\clsItem.cs" />
     <Compile Include="Items\clsItemsLogic.cs" />
     <Compile Include="Items\clsItemsSQL.cs" />
     <Compile Include="Items\wndItem.xaml.cs">
@@ -70,7 +71,6 @@
     <Compile Include="Main\wndMain.xaml.cs">
       <DependentUpon>wndMain.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Search\clsItem.cs" />
     <Compile Include="Search\clsSearchLogic.cs" />
     <Compile Include="Search\clsSearchSQL.cs" />
     <Compile Include="App.xaml.cs">
