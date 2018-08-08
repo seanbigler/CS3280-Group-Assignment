@@ -23,11 +23,25 @@ namespace CS3280GroupProject.Items
     /// </summary>
     public partial class wndItem : Window
     {
+        #region Attributes
 
+        /// <summary>
+        /// Main window object
+        /// </summary>
         public wndMain mainWindow;
+        /// <summary>
+        /// ItemLogic class object
+        /// </summary>
         clsItemsLogic clsIL;
 
+        #endregion
 
+        #region Methods
+
+        /// <summary>
+        /// Instantiates Item window
+        /// </summary>
+        /// <param name="main">Main window object</param>
         public wndItem(wndMain main)
         {
             try
@@ -47,6 +61,11 @@ namespace CS3280GroupProject.Items
 
         }
 
+        /// <summary>
+        /// Calls function to insert contents of text boxes into database as Item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             /*Take contents of txtCode, txtDescription, and txtCost and insert it into the
@@ -87,6 +106,11 @@ namespace CS3280GroupProject.Items
             }
         }
 
+        /// <summary>
+        /// Calls functions to delete selected item from database
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             /*Deletes selected item (selected on the datagrid) from the ItemDesc table
@@ -135,6 +159,11 @@ namespace CS3280GroupProject.Items
 
         }
 
+        /// <summary>
+        /// Calls functions to update selected item with values in txtDescription and txtCost
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
             /*Updates selected item (selected on the datagrid) in the ItemDesc table
@@ -177,6 +206,11 @@ namespace CS3280GroupProject.Items
             }
         }
 
+        /// <summary>
+        /// Fills text boxes with selected Item data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dgItems_SelectionChanged(object sender, EventArgs e)
         {
             /*When cell is changed, text boxes will fill with corresponding data from
@@ -209,6 +243,11 @@ namespace CS3280GroupProject.Items
 
         }
 
+        /// <summary>
+        /// Shows main window when closes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             try
@@ -245,5 +284,7 @@ namespace CS3280GroupProject.Items
                 System.IO.File.AppendAllText(@"C:\Error.txt", Environment.NewLine + "HandleError Exception: " + ex.Message);
             }
         }
+
+        #endregion
     }
 }
