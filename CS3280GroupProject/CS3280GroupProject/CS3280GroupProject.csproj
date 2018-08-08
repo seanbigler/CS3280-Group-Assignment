@@ -139,7 +139,7 @@
   <ItemGroup>
     <Resource Include="Icons\diamond3.png" />
     <Content Include="Invoice.mdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup />
