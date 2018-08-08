@@ -100,6 +100,25 @@ namespace CS3280GroupProject.Items
                 if(dgItems.SelectedIndex != -1)
                 {
                     //Call function to make sure item is not on an invoice
+                    List<string> invoiceList = new List<string>();
+
+                    bool onInvoice = clsIL.deleteItem(((clsItem)dgItems.SelectedItem).sItemCode.ToString(), ref invoiceList);
+
+                    if(!onInvoice)
+                    {
+                        dgItems.ItemsSource = null;
+                        dgItems.ItemsSource = clsIL.getItems();
+                    }
+                    else
+                    {
+                        string sError = "Failed to delete. Item found on following Invoices: \n";
+                        for(int i = 0; i < invoiceList.Count; i++)
+                        {
+                            sError += (invoiceList[i] + "\n");
+                        }
+
+                        MessageBox.Show(sError);
+                    }
 
                 }
                 else
