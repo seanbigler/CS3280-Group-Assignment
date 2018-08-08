@@ -111,6 +111,22 @@ namespace CS3280GroupProject.Items
             }
         }
 
+        public string FindItemWithCode(string itemID)
+        {
+            try
+            {
+                string sSQL = "SELECT ItemCode " +
+                              "FROM ItemDesc " +
+                              "WHERE ItemCode = '" + itemID + "';";
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " ->" + ex.Message);
+            }
+        }
+
 
 
 
