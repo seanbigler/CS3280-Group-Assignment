@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -40,13 +41,22 @@ namespace CS3280GroupProject.Main
         /// <param name="e"></param>
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            //Simple .Hide() and .ShowDialog() methods
-            if (itemWindow == null)
+            try
             {
-                itemWindow = new wndItem(this);
+                if (itemWindow == null)
+                {
+                    itemWindow = new wndItem(this);
+                }
+                this.Hide();
+                itemWindow.Show();
             }
-            this.Hide();
-            itemWindow.Show();
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+            //Simple .Hide() and .ShowDialog() methods
+           
         }
 
         /// <summary>
@@ -56,14 +66,21 @@ namespace CS3280GroupProject.Main
         /// <param name="e"></param>
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            //Top level error handling here
-            if (searchWindow == null)
+            try
             {
-                searchWindow = new wndSearch(this);
+                if (searchWindow == null)
+                {
+                    searchWindow = new wndSearch(this);
+                }
+                this.Hide();
+                searchWindow.Show();
             }
-            this.Hide();
-            searchWindow.Show();
-            //Top level error handling here
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+           
         }
 
         /// <summary>
@@ -79,6 +96,15 @@ namespace CS3280GroupProject.Main
              * Datagrid also will be updated as items are added and removed.
              * NOTE: edit and delete buttons remain disabled.
              */
+            try
+            {
+
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -93,6 +119,15 @@ namespace CS3280GroupProject.Main
              * 
              * Datagrid also will be updated as necessary.
              */
+            try
+            {
+
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -107,7 +142,15 @@ namespace CS3280GroupProject.Main
              * 
              * It will disable all user controls in information section other than the add button. 
              */
+            try
+            {
 
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -121,7 +164,15 @@ namespace CS3280GroupProject.Main
              * 
              * Refresh dataGrid with updated items.
              */
+            try
+            {
 
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
         /// <summary>
         /// This click event will allow user to remove line items from invoice.
@@ -134,6 +185,15 @@ namespace CS3280GroupProject.Main
              * 
              * Refresh dataGrid to update items list.
              */
+            try
+            {
+
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -152,6 +212,15 @@ namespace CS3280GroupProject.Main
              * 
              * All invoice and line items are added to database or updated line items in database.
              */
+            try
+            {
+
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
         /// <summary>
         /// This load event will create dataset with necessary values for dropbox
@@ -164,6 +233,15 @@ namespace CS3280GroupProject.Main
              * 
              * Controls except for update search and add will be disabled.
              */
+            try
+            {
+
+            }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -173,17 +251,34 @@ namespace CS3280GroupProject.Main
         /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (searchWindow != null)
+            try
             {
-                searchWindow.mainWindow = null;
-                searchWindow.Close();
+                if (searchWindow != null)
+                {
+                    searchWindow.mainWindow = null;
+                    searchWindow.Close();
+                }
             }
+            catch (System.Exception ex)
+            {
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        
         }
         /// <summary>
         /// Top level error handler to catch thrown exceptions
         /// </summary>
-        private void ErrorHandler() {
-
+        private void HandleError(string sClass, string sMethod, string sMessage)
+        {
+            try
+            {
+                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
+            }
+            catch (System.Exception ex)
+            {
+                System.IO.File.AppendAllText("C:\\Error.txt", Environment.NewLine + "HandleError Exception: " + ex.Message);
+            }
         }
         #endregion
     }
