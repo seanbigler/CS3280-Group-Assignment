@@ -73,6 +73,35 @@ namespace CS3280GroupProject.Items
         }
 
         //Function to Add Item
+        public bool addItem(string sCode, string sDesc, string sCost)
+        {
+            int iCost;
+            int iRet = 1;
+            bool validCost = false;
+
+            validCost = Int32.TryParse(sCost, out iCost);
+
+            if(validCost)
+            {
+                //Check if sCode is already used
+                string sSQL = clsSQL.FindItemWithCode(sCode);
+                clsDA.ExecuteSQLStatement(sSQL, ref iRet);
+                if(iRet == 0)
+                {
+                    sSQL = clsSQL.AddItem(sCode, sDesc, iCost);
+                    clsDA.ExecuteNonQuery(sSQL);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         //Function to Delete Item
     }

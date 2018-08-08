@@ -57,6 +57,27 @@ namespace CS3280GroupProject.Items
              */
              try
             {
+                if(txtCode.Text == "" || txtDescription.Text == "" || txtCost.Text == "")
+                {
+                    MessageBox.Show("Please enter text in all boxes.");
+                }
+                else
+                {
+                    bool valid = clsIL.addItem(txtCode.Text, txtDescription.Text, txtCost.Text);
+                    
+                    if(!valid)
+                    {
+                        MessageBox.Show("Please enter unique item code and valid cost");
+                    }
+                    else
+                    {
+                        dgItems.ItemsSource = null;
+                        dgItems.ItemsSource = clsIL.getItems();
+                        txtCode.Text = "";
+                        txtDescription.Text = "";
+                        txtCost.Text = "";
+                    }
+                }
 
             }
             catch (Exception ex)
@@ -75,6 +96,16 @@ namespace CS3280GroupProject.Items
              */
              try
             {
+                //Make sure an index is selected
+                if(dgItems.SelectedIndex != -1)
+                {
+                    //Call function to make sure item is not on an invoice
+
+                }
+                else
+                {
+                    MessageBox.Show("Select an item to delete");
+                }
 
             }
             catch (Exception ex)
