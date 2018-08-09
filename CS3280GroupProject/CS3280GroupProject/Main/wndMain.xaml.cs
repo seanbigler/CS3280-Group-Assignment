@@ -198,6 +198,35 @@ namespace CS3280GroupProject.Main
              */
             try
             {
+              
+                //delete invoice from tables
+                clsMainSQL.deleteInvoice(Int32.Parse(tbInvoiceNumber.Text));
+
+                //reset all to default
+                tbInvoiceNumber.IsEnabled = false;
+                tbInvoiceNumber.Text = "TBD";
+                dpInvoiceDate.IsEnabled = true;
+                dpInvoiceDate.DisplayDate = DateTime.Today;
+                dpInvoiceDate.IsEnabled = false;
+                tbItemCost.Text = "";
+                tbItemCost.IsEnabled = false;
+                tbItemCost.IsReadOnly = true;
+                cbLineItem.IsEnabled = false;
+                btnAddItem.IsEnabled = false;
+                btnDelete.IsEnabled = false;
+                btnEdit.IsEnabled = false;
+                btnRemoveItem.IsEnabled = false;
+                btnSaveInvoice.IsEnabled = false;
+                tbInvoiceNumber.IsReadOnly = true;
+                btnAdd.IsEnabled = true;
+                tbTotal.Content = "$0";
+
+                //clear line item list
+                foreach (clsItem item in lineItemList)
+                {
+                    dgMain.Items.Remove(item);
+                }
+                lineItemList.Clear();
 
             }
             catch (System.Exception ex)
@@ -315,11 +344,30 @@ namespace CS3280GroupProject.Main
                     }
                 }
                 else {// add new
+                    int count = 1;
                     clsMainSQL.addInvoice(dpInvoiceDate.Text);
                     //look up last entry and add lineitems to table
                     foreach (clsItem item in lineItemList) {
-                        clsMainSQL.addInvoiceLineItem(clsMainSQL.getNewInvoiceNumber(),(lineItemList.IndexOf(item) + 1),item.sItemCode);
+                        clsMainSQL.addInvoiceLineItem(clsMainSQL.getNewInvoiceNumber(),count,item.sItemCode);
+                        count++;
                     }
+
+                    //set everything to read only 
+                    tbInvoiceNumber.Text = clsMainSQL.getNewInvoiceNumber().ToString();
+                    tbInvoiceNumber.IsEnabled = false;
+                    dpInvoiceDate.IsEnabled = false;
+                    btnAdd.IsEnabled = false;
+                    tbItemCost.IsEnabled = false;
+                    tbItemCost.IsReadOnly = true;
+                    cbLineItem.IsEnabled = false;
+                    btnAddItem.IsEnabled = false;
+                    btnRemoveItem.IsEnabled = false;
+                    btnSaveInvoice.IsEnabled = false;
+                    tbInvoiceNumber.IsReadOnly = true;
+                    btnEdit.IsEnabled = true;
+                    btnDelete.IsEnabled = true;
+
+                   
                 }
             }
             catch (System.Exception ex)
@@ -343,6 +391,7 @@ namespace CS3280GroupProject.Main
             {
                 tbInvoiceNumber.IsEnabled = false;
                 dpInvoiceDate.IsEnabled = false;
+                dpInvoiceDate.DisplayDate = DateTime.Today;
                 tbItemCost.IsEnabled = false;
                 tbItemCost.IsReadOnly = true;
                 cbLineItem.IsEnabled = false;

@@ -33,14 +33,16 @@ namespace CS3280GroupProject
         /// This SQL statement deletes a new invoice from the invoices table in Invoice.mdb
         /// </summary>
         /// <returns>Insert SQL</returns>
-        public static string deleteInvoice(int iInvoiceNum)
+        public static void deleteInvoice(int iInvoiceNum)
         {
             try
             {
+                clsDataAccess ds = new clsDataAccess();
+                string sSQL1 = "DELETE FROM LineItems WHERE InvoiceNum = " + iInvoiceNum;
+                ds.ExecuteNonQuery(sSQL1);
+                string sSQL = "DELETE FROM Invoices WHERE InvoiceNum = " + iInvoiceNum;
+                ds.ExecuteNonQuery(sSQL);
 
-                string sSQL = "SELECT * FROM Invoices i INNER JOIN LineItems li" + 
-                              "ON i.InvoiceNum = li.InvoiceNum WHERE i.InvoiceNum = " + iInvoiceNum + ";";
-                return sSQL;
             }
             catch (Exception ex)
             {
