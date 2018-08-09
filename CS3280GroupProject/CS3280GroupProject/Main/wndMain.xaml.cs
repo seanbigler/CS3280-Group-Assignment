@@ -27,7 +27,9 @@ namespace CS3280GroupProject.Main
         public wndSearch searchWindow;
         public wndItem itemWindow;
         ObservableCollection<clsItem> itemList;
+        ObservableCollection<clsItem> lineItemList;
         clsItemsLogic item;
+        public string selectedItem;
         #endregion
 
         #region Class Methods
@@ -37,6 +39,7 @@ namespace CS3280GroupProject.Main
 
             itemList = new ObservableCollection<clsItem>();
             item = new clsItemsLogic();
+            lineItemList = new ObservableCollection<clsItem>();
             InitializeComponent();
         }
 
@@ -109,6 +112,7 @@ namespace CS3280GroupProject.Main
                 tbItemCost.IsEnabled = true;
                 cbLineItem.IsEnabled = true;
                 dgMain.IsEnabled = true;
+                btnAddItem.IsEnabled = true;
 
                 //set placeholder to TBD 
                 tbInvoiceNumber.Text = "TBD";
@@ -139,7 +143,7 @@ namespace CS3280GroupProject.Main
             ComboBox cb = (ComboBox)sender;
 
             //get value of selected item
-            string selectedItem = cb.SelectedItem.ToString();
+            selectedItem = cb.SelectedItem.ToString();
 
             //find cost of selected item
             foreach (clsItem item in itemList)
@@ -211,6 +215,25 @@ namespace CS3280GroupProject.Main
              */
             try
             {
+                //get selected items information
+                clsItem currItem = new clsItem();
+
+                 foreach (clsItem item in itemList)
+                {
+                    if (item.sItemDesc.ToString() == selectedItem)
+                    {
+                        //fill cost text box with selected item price
+                        currItem.sItemCode = item.sItemCode.ToString();
+                        currItem.sItemCode = item.sCost.ToString();
+                        currItem.sItemDesc = item.sItemDesc.ToString();
+                    }
+                }
+
+                //add item to line item list
+                lineItemList.Add(currItem);
+
+                //add item to data grid
+
 
             }
             catch (System.Exception ex)
@@ -283,7 +306,11 @@ namespace CS3280GroupProject.Main
                 tbInvoiceNumber.IsEnabled = false;
                 dpInvoiceDate.IsEnabled = false;
                 tbItemCost.IsEnabled = false;
+                tbItemCost.IsReadOnly = true;
                 cbLineItem.IsEnabled = false;
+                btnAddItem.IsEnabled = false;
+                btnRemoveItem.IsEnabled = false;
+                btnSaveInvoice.IsEnabled = false;
             }
             catch (System.Exception ex)
             {
