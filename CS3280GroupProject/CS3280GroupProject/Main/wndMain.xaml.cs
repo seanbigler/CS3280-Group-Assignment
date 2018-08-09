@@ -30,7 +30,8 @@ namespace CS3280GroupProject.Main
         ObservableCollection<clsItem> lineItemList;
         clsItemsLogic item;
         public string selectedItem;
-        
+        clsItem currItem;
+
         #endregion
 
         #region Class Methods
@@ -41,6 +42,7 @@ namespace CS3280GroupProject.Main
             itemList = new ObservableCollection<clsItem>();
             item = new clsItemsLogic();
             lineItemList = new ObservableCollection<clsItem>();
+            currItem = new clsItem();
             InitializeComponent();
         }
 
@@ -114,6 +116,7 @@ namespace CS3280GroupProject.Main
                 cbLineItem.IsEnabled = true;
                 dgMain.IsEnabled = true;
                 btnAddItem.IsEnabled = true;
+                btnRemoveItem.IsEnabled = true;
 
                 //set placeholder to TBD 
                 tbInvoiceNumber.Text = "TBD";
@@ -216,9 +219,7 @@ namespace CS3280GroupProject.Main
              */
             try
             {
-                //get selected items information
-                clsItem currItem = new clsItem();
-
+                
                  foreach (clsItem item in itemList)
                 {
                     if (item.sItemDesc.ToString() == selectedItem)
@@ -263,7 +264,23 @@ namespace CS3280GroupProject.Main
              */
             try
             {
+                double sum2 = 0;
 
+                if (lineItemList.Count != 0) {
+                    //remove item from datagrid
+                    dgMain.Items.Remove(currItem);
+
+                    //remove from list
+                    lineItemList.Remove(currItem);
+
+                    //repopulate total count based on lineitemslist
+                    foreach (clsItem item in lineItemList)
+                    {
+                        sum2 += double.Parse(item.sCost);
+                    }
+                    tbTotal.Content = "$" + sum2.ToString();
+                }
+               
             }
             catch (System.Exception ex)
             {
