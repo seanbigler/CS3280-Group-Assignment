@@ -117,6 +117,7 @@ namespace CS3280GroupProject.Main
                 dgMain.IsEnabled = true;
                 btnAddItem.IsEnabled = true;
                 btnRemoveItem.IsEnabled = true;
+                btnSaveInvoice.IsEnabled = true;
 
                 //set placeholder to TBD 
                 tbInvoiceNumber.Text = "TBD";
@@ -280,7 +281,6 @@ namespace CS3280GroupProject.Main
                     }
                     tbTotal.Content = "$" + sum2.ToString();
                 }
-               
             }
             catch (System.Exception ex)
             {
@@ -307,7 +307,20 @@ namespace CS3280GroupProject.Main
              */
             try
             {
-
+                if (tbInvoiceNumber.Text != "TBD") { //exists update
+                    clsMainSQL.updateInvoice(Int32.Parse(tbInvoiceNumber.Text), dpInvoiceDate.Text);
+                    foreach (clsItem item in lineItemList)
+                    {
+                        clsMainSQL.updateLineItem(clsMainSQL.getNewInvoiceNumber(), (lineItemList.IndexOf(item) + 1), item.sItemCode);
+                    }
+                }
+                else {// add new
+                    clsMainSQL.addInvoice(dpInvoiceDate.Text);
+                    //look up last entry and add lineitems to table
+                    foreach (clsItem item in lineItemList) {
+                        clsMainSQL.addInvoiceLineItem(clsMainSQL.getNewInvoiceNumber(),(lineItemList.IndexOf(item) + 1),item.sItemCode);
+                    }
+                }
             }
             catch (System.Exception ex)
             {
@@ -336,6 +349,7 @@ namespace CS3280GroupProject.Main
                 btnAddItem.IsEnabled = false;
                 btnRemoveItem.IsEnabled = false;
                 btnSaveInvoice.IsEnabled = false;
+                tbInvoiceNumber.IsReadOnly = true;
             }
             catch (System.Exception ex)
             {

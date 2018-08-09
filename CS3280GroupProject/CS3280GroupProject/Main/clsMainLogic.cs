@@ -13,11 +13,7 @@ namespace CS3280GroupProject
     class clsMainLogic
     {
         #region Attributes
-        /// <summary>
-        /// clsItemLogic object declaration
-        /// </summary>
         
-        ObservableCollection<clsItem> itemList;
         #endregion
         /// <summary>
         /// Constructor

@@ -14,12 +14,13 @@ namespace CS3280GroupProject
         /// This SQL inserts a new invoice into the invoices table in Invoice.mdb
         /// </summary>
         /// <returns>Insert SQL</returns>
-        public static string addInvoice(string sDate)
+        public static void addInvoice(string sDate)
         {
             try
             {
+                clsDataAccess ds = new clsDataAccess();
                 string sSQL = "INSERT INTO Invoices (InvoiceDate) VALUES ('" + sDate + "');";
-                return sSQL;
+                ds.ExecuteNonQuery(sSQL);
             }
             catch (Exception ex)
             {
@@ -36,6 +37,7 @@ namespace CS3280GroupProject
         {
             try
             {
+
                 string sSQL = "SELECT * FROM Invoices i INNER JOIN LineItems li" + 
                               "ON i.InvoiceNum = li.InvoiceNum WHERE i.InvoiceNum = " + iInvoiceNum + ";";
                 return sSQL;
@@ -90,12 +92,16 @@ namespace CS3280GroupProject
         /// </summary>
         /// <param name="sItemCode"></param>
         /// <returns>Item names</returns>
-        public static string getNewInvoiceNumber()
+        public static int getNewInvoiceNumber()
         {
             try
             {
+                clsDataAccess ds = new clsDataAccess();
+                int id;
                 string sSQL = "SELECT Max(InvoiceNum) AS InvoiceNumber FROM Invoices; ";
-                return sSQL;
+                id = Int32.Parse(ds.ExecuteScalarSQL(sSQL));
+
+                return id;
             }
             catch (Exception ex)
             {
@@ -109,13 +115,14 @@ namespace CS3280GroupProject
         /// </summary>
         /// <param name="sItemCode"></param>
         /// <returns>Insert Line item</returns>
-        public static string addInvoiceLineItem(int iInvoiceNumber, int iLineItemNumber, string ItemCode)
+        public static void addInvoiceLineItem(int iInvoiceNumber, int iLineItemNumber, string ItemCode)
         {
             try
             {
+                clsDataAccess ds = new clsDataAccess();
                 string sSQL = "INSERT INTO LineItems (InvoiceNum, LineItemNum, ItemCode) " +
                               "VALUES (" + iInvoiceNumber + "," + iLineItemNumber + ",'" + ItemCode + "');";
-                return sSQL;
+                ds.ExecuteNonQuery(sSQL);
             }
             catch (Exception ex)
             {
@@ -129,12 +136,15 @@ namespace CS3280GroupProject
         /// </summary>
         /// <param name="sItemCode"></param>
         /// <returns>Line Item deletion</returns>
-        public static string removeInvoiceLineItem(int iInvoiceNumber, int iLineItemNum )
+        public static void removeInvoiceLineItem(int iInvoiceNumber, int iLineItemNum )
         {
             try
             {
+                clsDataAccess ds = new clsDataAccess();
+                
                 string sSQL = "DELETE FROM LineItems WHERE InvoiceNum = " + iInvoiceNumber + " AND LineItemNum = " + iLineItemNum + "; ";
-                return sSQL;
+                ds.ExecuteNonQuery(sSQL);
+
             }
             catch (Exception ex)
             {
@@ -149,12 +159,13 @@ namespace CS3280GroupProject
        /// <param name="iInvoiceNum"></param>
        /// <param name="sDate"></param>
        /// <returns>Update SQL statement</returns>
-        public static string updateInvoice(int iInvoiceNum, string sDate)
+        public static void updateInvoice(int iInvoiceNum, string sDate)
         {
             try
             {
+                clsDataAccess ds = new clsDataAccess();
                 string sSQL = "UPDATE Invoices SET InvoiceDate = '" + sDate + "' WHERE InvoiceNum = " + iInvoiceNum + "; ";
-                return sSQL;
+                ds.ExecuteNonQuery(sSQL);
             }
             catch (Exception ex)
             {
@@ -168,13 +179,15 @@ namespace CS3280GroupProject
         /// <param name="iInvoiceNumber"></param>
         /// <param name="iLineItemNum"></param>
         /// <returns>SQL statement</returns>
-        public static string updateLineItem(int iInvoiceNumber, int iLineItemNumber, string sItemCode)
+        public static void updateLineItem(int iInvoiceNumber, int iLineItemNumber, string sItemCode)
         {
             try
             {
+                clsDataAccess ds = new clsDataAccess();
                 string sSQL = "UPDATE LineItems SET ItemCode = '" + sItemCode + "'" +
                               "WHERE InvoiceNum = " + iInvoiceNumber + " AND LineItemNum = " + iLineItemNumber +";";
-                return sSQL;
+                ds.ExecuteNonQuery(sSQL);
+
             }
             catch (Exception ex)
             {
