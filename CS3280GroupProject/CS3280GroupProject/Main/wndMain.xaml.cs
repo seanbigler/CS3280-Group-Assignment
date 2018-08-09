@@ -31,6 +31,7 @@ namespace CS3280GroupProject.Main
         clsItemsLogic item;
         public string selectedItem;
         clsItem currItem;
+        string selectedInvoice;
 
         #endregion
 
@@ -86,6 +87,18 @@ namespace CS3280GroupProject.Main
                 }
                 this.Hide();
                 searchWindow.Show();
+                //retrieve search selected.
+                selectedInvoice = searchWindow.SelectedInvoiceNum;
+                tbInvoiceNumber.Text = selectedInvoice;
+                clsSearchLogic search = new clsSearchLogic();
+                List<string> list = new List<string>();
+                list = search.GetInvoiceDateWithNum(selectedInvoice);
+                dpInvoiceDate.Text = list[0];
+                List<clsItem> items = new List<clsItem>();
+               
+
+
+
             }
             catch (System.Exception ex)
             {
@@ -175,7 +188,23 @@ namespace CS3280GroupProject.Main
              */
             try
             {
+                //enable controls
+                dpInvoiceDate.IsEnabled = true;
+                tbItemCost.IsEnabled = true;
+                cbLineItem.IsEnabled = true;
+                dgMain.IsEnabled = true;
+                btnAddItem.IsEnabled = true;
+                btnRemoveItem.IsEnabled = true;
+                btnSaveInvoice.IsEnabled = true;
 
+                //get list of items from clsItemsLogic
+                itemList = item.getItems();
+
+                //populate item list dropdown
+                foreach (clsItem item in itemList)
+                {
+                    cbLineItem.Items.Add(item.sItemDesc);
+                }
             }
             catch (System.Exception ex)
             {
@@ -206,7 +235,7 @@ namespace CS3280GroupProject.Main
                 tbInvoiceNumber.IsEnabled = false;
                 tbInvoiceNumber.Text = "TBD";
                 dpInvoiceDate.IsEnabled = true;
-                dpInvoiceDate.DisplayDate = DateTime.Today;
+                dpInvoiceDate.Text = "";
                 dpInvoiceDate.IsEnabled = false;
                 tbItemCost.Text = "";
                 tbItemCost.IsEnabled = false;
@@ -336,39 +365,47 @@ namespace CS3280GroupProject.Main
              */
             try
             {
-                if (tbInvoiceNumber.Text != "TBD") { //exists update
-                    clsMainSQL.updateInvoice(Int32.Parse(tbInvoiceNumber.Text), dpInvoiceDate.Text);
-                    foreach (clsItem item in lineItemList)
-                    {
-                        clsMainSQL.updateLineItem(clsMainSQL.getNewInvoiceNumber(), (lineItemList.IndexOf(item) + 1), item.sItemCode);
+                if (dpInvoiceDate.SelectedDate != null && lineItemList.Count > 0) {
+                    if (tbInvoiceNumber.Text != "TBD")
+                    { //exists update
+                        clsMainSQL.updateInvoice(Int32.Parse(tbInvoiceNumber.Text), dpInvoiceDate.Text);
+                        foreach (clsItem item in lineItemList)
+                        {
+                            clsMainSQL.updateLineItem(clsMainSQL.getNewInvoiceNumber(), (lineItemList.IndexOf(item) + 1), item.sItemCode);
+                        }
+                    }
+                    else
+                    {// add new
+                        int count = 1;
+                        clsMainSQL.addInvoice(dpInvoiceDate.Text);
+                        //look up last entry and add lineitems to table
+                        foreach (clsItem item in lineItemList)
+                        {
+                            clsMainSQL.addInvoiceLineItem(clsMainSQL.getNewInvoiceNumber(), count, item.sItemCode);
+                            count++;
+                        }
+
+                        //set everything to read only 
+                        tbInvoiceNumber.Text = clsMainSQL.getNewInvoiceNumber().ToString();
+                        tbInvoiceNumber.IsEnabled = false;
+                        dpInvoiceDate.IsEnabled = false;
+                        btnAdd.IsEnabled = false;
+                        tbItemCost.IsEnabled = false;
+                        tbItemCost.IsReadOnly = true;
+                        cbLineItem.IsEnabled = false;
+                        btnAddItem.IsEnabled = false;
+                        btnRemoveItem.IsEnabled = false;
+                        btnSaveInvoice.IsEnabled = false;
+                        tbInvoiceNumber.IsReadOnly = true;
+                        btnEdit.IsEnabled = true;
+                        btnDelete.IsEnabled = true;
+                        
                     }
                 }
-                else {// add new
-                    int count = 1;
-                    clsMainSQL.addInvoice(dpInvoiceDate.Text);
-                    //look up last entry and add lineitems to table
-                    foreach (clsItem item in lineItemList) {
-                        clsMainSQL.addInvoiceLineItem(clsMainSQL.getNewInvoiceNumber(),count,item.sItemCode);
-                        count++;
-                    }
-
-                    //set everything to read only 
-                    tbInvoiceNumber.Text = clsMainSQL.getNewInvoiceNumber().ToString();
-                    tbInvoiceNumber.IsEnabled = false;
-                    dpInvoiceDate.IsEnabled = false;
-                    btnAdd.IsEnabled = false;
-                    tbItemCost.IsEnabled = false;
-                    tbItemCost.IsReadOnly = true;
-                    cbLineItem.IsEnabled = false;
-                    btnAddItem.IsEnabled = false;
-                    btnRemoveItem.IsEnabled = false;
-                    btnSaveInvoice.IsEnabled = false;
-                    tbInvoiceNumber.IsReadOnly = true;
-                    btnEdit.IsEnabled = true;
-                    btnDelete.IsEnabled = true;
-
-                   
+                else {
+                    MessageBox.Show("Please enter invoice information before saving");
                 }
+                
             }
             catch (System.Exception ex)
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CS3280GroupProject.Search;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -75,12 +76,16 @@ namespace CS3280GroupProject
         /// </summary>
         /// <param name="sItemCode"></param>
         /// <returns>Item names</returns>
-        public static string getItemNames()
+        public static List<clsItem> getInvoiceLineItems()
         {
             try
             {
+                clsDataAccess ds = new clsDataAccess();
+                List<clsItem> list = new List<clsItem>();
+
                 string sSQL = "SELECT ItemDesc FROM ItemDesc";
-                return sSQL;
+                // TODO: finish getting all line items for specific invoice
+                return list;
             }
             catch (Exception ex)
             {
