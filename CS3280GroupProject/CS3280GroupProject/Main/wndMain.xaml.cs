@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -25,12 +26,17 @@ namespace CS3280GroupProject.Main
         #region Class Attributes
         public wndSearch searchWindow;
         public wndItem itemWindow;
+        ObservableCollection<clsItem> itemList;
+        clsItemsLogic item;
         #endregion
 
         #region Class Methods
 
         public wndMain()
         {
+
+            itemList = new ObservableCollection<clsItem>();
+            item = new clsItemsLogic();
             InitializeComponent();
         }
 
@@ -98,6 +104,22 @@ namespace CS3280GroupProject.Main
              */
             try
             {
+                //enable controls
+                dpInvoiceDate.IsEnabled = true;
+                tbItemCost.IsEnabled = true;
+                cbLineItem.IsEnabled = true;
+                dgMain.IsEnabled = true;
+
+                //set placeholder to TBD 
+                tbInvoiceNumber.Text = "TBD";
+
+                //get list of items from clsItemsLogic
+                itemList = item.getItems();
+
+                //populate item list dropdown
+                foreach (clsItem item in itemList) {
+                    cbLineItem.Items.Add(item.sItemDesc);
+                }
 
             }
             catch (System.Exception ex)
@@ -105,6 +127,29 @@ namespace CS3280GroupProject.Main
                 HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
                             MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Line Item combo box selection change handler method
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cbLineItem_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cb = (ComboBox)sender;
+
+            //get value of selected item
+            string selectedItem = cb.SelectedItem.ToString();
+
+            //find cost of selected item
+            foreach (clsItem item in itemList)
+            {
+                if (item.sItemDesc.ToString() == selectedItem)
+                {
+                    //fill cost text box with selected item price
+                    tbItemCost.Text = "$" + item.sCost.ToString();
+                }
+            } 
         }
 
         /// <summary>
@@ -235,7 +280,10 @@ namespace CS3280GroupProject.Main
              */
             try
             {
-
+                tbInvoiceNumber.IsEnabled = false;
+                dpInvoiceDate.IsEnabled = false;
+                tbItemCost.IsEnabled = false;
+                cbLineItem.IsEnabled = false;
             }
             catch (System.Exception ex)
             {
@@ -281,5 +329,6 @@ namespace CS3280GroupProject.Main
             }
         }
         #endregion
+
     }
 }

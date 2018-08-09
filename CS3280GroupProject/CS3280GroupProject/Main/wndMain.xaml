@@ -40,7 +40,7 @@
             <MenuItem x:Name="btnUpdate" Header="Update" Margin="0,5,5,5" Padding="15,5,15,5" Click="MenuItem_Click"/>
             <MenuItem x:Name="btnSearch" Header="Search" Margin="5,5,10,5" Padding="15,5,15,5" Click="btnSearch_Click"/>
         </Menu>
-        <DataGrid Grid.Column="2" HorizontalAlignment="Left" Height="389" Margin="367,22,0,0" Grid.Row="2" VerticalAlignment="Top" Width="305"/>
+        <DataGrid x:Name="dgMain" Grid.Column="2" HorizontalAlignment="Left" Height="389" Margin="367,22,0,0" Grid.Row="2" VerticalAlignment="Top" Width="305"/>
         <GroupBox Grid.Column="2" Header="Invoice Options" HorizontalAlignment="Left" Height="64" Margin="10,10,0,0" Grid.Row="2" VerticalAlignment="Top" Width="256"/>
         <Menu x:Name="mnuInvoiceOptions" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="43" Margin="10,31,0,0" Grid.Row="2" VerticalAlignment="Top" Width="256">
             <MenuItem x:Name="btnAdd" Header="Add" Margin="15,5,15,5" Padding="15,5,15,5" FontSize="14" Click="btnAdd_Click"/>
@@ -48,13 +48,13 @@
             <MenuItem x:Name="btnDelete" Header="Delete" Margin="5,5,15,5" Padding="15,5,15,5" FontSize="14" IsEnabled="False" Click="btnDelete_Click" />
         </Menu>
         <Label Content="Invoice Number" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="3" Margin="28,108,0,0" Grid.Row="2" Height="27"/>
-        <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="141,112,0,0" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Top" Width="182" AutomationProperties.HelpText="TBD"/>
+        <TextBox x:Name="tbInvoiceNumber" Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="141,112,0,0" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Top" Width="182" AutomationProperties.HelpText="TBD"/>
         <Label Content="Invoice Date" Grid.Column="2" HorizontalAlignment="Left" Margin="49,150,0,0" Grid.Row="2" VerticalAlignment="Top"/>
-        <DatePicker Grid.Column="2" HorizontalAlignment="Left" Margin="141,150,0,0" Grid.Row="2" VerticalAlignment="Top" Width="120"/>
+        <DatePicker x:Name="dpInvoiceDate" Grid.Column="2" HorizontalAlignment="Left" Margin="141,150,0,0" Grid.Row="2" VerticalAlignment="Top" Width="120"/>
         <Label Content="Line Item" Grid.Column="2" HorizontalAlignment="Left" Margin="69,229,0,0" Grid.Row="2" VerticalAlignment="Top"/>
         <Label Content="Item Cost" Grid.Column="2" HorizontalAlignment="Left" Margin="67,188,0,0" Grid.Row="2" VerticalAlignment="Top"/>
-        <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="141,192,0,0" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <ComboBox Grid.Column="2" HorizontalAlignment="Left" Margin="141,230,0,0" Grid.Row="2" VerticalAlignment="Top" Width="182"/>
+        <TextBox x:Name="tbItemCost" Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="141,192,0,0" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="cbLineItem" Grid.Column="2" HorizontalAlignment="Left" Margin="141,230,0,0" Grid.Row="2" VerticalAlignment="Top" Width="182" SelectionChanged="cbLineItem_SelectionChanged"/>
         <Button x:Name="btnAddItem" Content="Add Item" Grid.Column="2" HorizontalAlignment="Left" Margin="141,277,0,0" Grid.Row="2" VerticalAlignment="Top" Width="75" Click="btnAddItem_Click"/>
         <Button x:Name="btnRemoveItem" Content="Remove Item" Grid.Column="2" HorizontalAlignment="Left" Margin="230,277,0,0" Grid.Row="2" VerticalAlignment="Top" Width="93" Click="btnRemoveItem_Click"/>
         <Button x:Name="btnSaveInvoice" Content="Save Invoice" Grid.Column="2" HorizontalAlignment="Left" Margin="230,362,0,0" Grid.Row="2" VerticalAlignment="Top" Width="93" Height="34" Click="btnSaveInvoice_Click"/>
