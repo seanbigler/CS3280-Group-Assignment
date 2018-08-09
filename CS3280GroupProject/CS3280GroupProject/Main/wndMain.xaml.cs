@@ -30,6 +30,7 @@ namespace CS3280GroupProject.Main
         ObservableCollection<clsItem> lineItemList;
         clsItemsLogic item;
         public string selectedItem;
+        
         #endregion
 
         #region Class Methods
@@ -224,17 +225,24 @@ namespace CS3280GroupProject.Main
                     {
                         //fill cost text box with selected item price
                         currItem.sItemCode = item.sItemCode.ToString();
-                        currItem.sItemCode = item.sCost.ToString();
+                        currItem.sCost = item.sCost.ToString();
                         currItem.sItemDesc = item.sItemDesc.ToString();
                     }
                 }
 
+                 //temp sum variable
+                double sum = 0;
+
                 //add item to line item list
                 lineItemList.Add(currItem);
-
                 //add item to data grid
+                dgMain.Items.Add(currItem);
 
-
+                foreach (clsItem item in lineItemList) {
+                    sum += double.Parse(item.sCost);
+                }
+                tbTotal.Content = "$" + sum.ToString();
+               
             }
             catch (System.Exception ex)
             {
