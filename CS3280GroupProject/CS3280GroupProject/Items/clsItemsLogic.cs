@@ -39,8 +39,17 @@ namespace CS3280GroupProject.Items
         /// </summary>
         public clsItemsLogic()
         {
-            clsSQL = new clsItemsSQL();
-            clsDA = new clsDataAccess();
+            try
+            {
+                clsSQL = new clsItemsSQL();
+                clsDA = new clsDataAccess();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " ->" + ex.Message);
+            }
+
 
         }
 
