@@ -13,15 +13,16 @@ namespace CS3280GroupProject
     class clsMainLogic
     {
         #region Attributes
-        
+
         #endregion
+
+        #region Methods
         /// <summary>
         /// Constructor
         /// </summary>
         clsMainLogic() {
 
         }
-
-
+        #endregion
     }
 }

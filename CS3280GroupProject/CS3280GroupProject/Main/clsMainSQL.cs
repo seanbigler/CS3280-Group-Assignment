@@ -2,6 +2,8 @@
 using CS3280GroupProject.Search;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -77,18 +79,39 @@ namespace CS3280GroupProject
         /// </summary>
         /// <param name="sItemCode"></param>
         /// <returns>Item names</returns>
-        public static List<clsItem> getInvoice()
+        public static clsInvoice getInvoice(int invoiceNumber)
         {
             try
             {
                 //local variables to store returned data
                 clsDataAccess ds = new clsDataAccess();
                 clsInvoice invoice = new clsInvoice();
-                
+                DataSet dataSet = new DataSet();
+                ObservableCollection<clsItem> list = new ObservableCollection<clsItem>();
 
-                string sSQL = "SELECT ItemDesc FROM ItemDesc";
-                // TODO: finish getting all line items for specific invoice
-                return list;
+                //set invoice object attribute invoice number
+                invoice.setInvoiceNumber(invoiceNumber);
+
+                //get invoice date using invoice number
+                string sSQL = "SELECT InvoiceDate FROM Invoices WHERE InvoiceNum = " + invoiceNumber;
+                invoice.setInvoiceDate(ds.ExecuteScalarSQL(sSQL).ToString());
+
+                //get line items
+                int iRef = 0;
+                sSQL = "SELECT LineItems.ItemCode, ItemDesc.ItemDesc, ItemDesc.Cost FROM ItemDesc" + 
+                        "INNER JOIN LineItems ON ItemDesc.ItemCode = LineItems.ItemCode WHERE LineItems.InvoiceNum = " + invoiceNumber;
+                dataSet = ds.ExecuteSQLStatement(sSQL, ref iRef);
+                foreach (DataRow dr in dataSet.Tables[0].Rows)
+                {
+                    clsItem item = new clsItem();
+                    item.sItemCode = dr[0].ToString();
+                    item.sItemDesc = dr[1].ToString();
+                    item.sCost = dr[2].ToString();
+                    list.Add(item);
+                }
+                invoice.setLineItemList(list);
+
+                return invoice;
             }
             catch (Exception ex)
             {
