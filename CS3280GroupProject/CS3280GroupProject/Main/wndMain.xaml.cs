@@ -60,6 +60,10 @@ namespace CS3280GroupProject.Main
                 {
                     itemWindow = new wndItem(this);
                 }
+
+                cbLineItem.Items.Clear();
+                tbItemCost.Text = "";
+
                 this.Hide();
                 itemWindow.Show();
             }
@@ -87,53 +91,55 @@ namespace CS3280GroupProject.Main
                 }
                 this.Hide();
                 searchWindow.ShowDialog();
-
-                if (searchWindow.SelectedInvoiceNum != "")
+                if (searchWindow != null)
                 {
-                    //retrieve search selected.
-                    selectedInvoice = Int32.Parse(searchWindow.SelectedInvoiceNum);
-
-                    //get invoice from selected num
-                    clsInvoice invoice = new clsInvoice();
-                    invoice = clsMainSQL.getInvoice(selectedInvoice);
-                    ObservableCollection<clsItem> tempList = invoice.getLineItemList();
-
-                    //populate controls with invoice data for edit
-                    tbInvoiceNumber.Text = invoice.getInvoiceNumber().ToString();
-                    dpInvoiceDate.DisplayDate = DateTime.Parse(invoice.getInvoiceDate());
-                    dpInvoiceDate.SelectedDate = DateTime.Parse(invoice.getInvoiceDate());
-
-                    dgMain.Items.Clear();
-
-                    foreach (clsItem item in tempList)
+                    if (searchWindow.SelectedInvoiceNum != "")
                     {
-                        dgMain.Items.Add(item);
-                    }
+                        //retrieve search selected.
+                        selectedInvoice = Int32.Parse(searchWindow.SelectedInvoiceNum);
 
-                    double sum = 0;
-                    foreach (clsItem item in tempList)
-                    {
-                        sum += double.Parse(item.sCost);
-                    }
-                    tbTotal.Content = "$" + sum.ToString();
+                        //get invoice from selected num
+                        clsInvoice invoice = new clsInvoice();
+                        invoice = clsMainSQL.getInvoice(selectedInvoice);
+                        ObservableCollection<clsItem> tempList = invoice.getLineItemList();
 
-                    //enable components
-                    tbInvoiceNumber.IsEnabled = false;
-                    dpInvoiceDate.IsEnabled = false;
-                    btnAdd.IsEnabled = false;
-                    tbItemCost.IsEnabled = false;
-                    tbItemCost.IsReadOnly = true;
-                    cbLineItem.IsEnabled = false;
-                    btnAddItem.IsEnabled = false;
-                    btnRemoveItem.IsEnabled = false;
-                    btnSaveInvoice.IsEnabled = false;
-                    tbInvoiceNumber.IsReadOnly = true;
-                    btnEdit.IsEnabled = true;
-                    btnDelete.IsEnabled = true;
-                    btnSearch.IsEnabled = false;
-                    btnUpdate.IsEnabled = false;
+                        //populate controls with invoice data for edit
+                        tbInvoiceNumber.Text = invoice.getInvoiceNumber().ToString();
+                        dpInvoiceDate.DisplayDate = DateTime.Parse(invoice.getInvoiceDate());
+                        dpInvoiceDate.SelectedDate = DateTime.Parse(invoice.getInvoiceDate());
+
+                        dgMain.Items.Clear();
+
+                        foreach (clsItem item in tempList)
+                        {
+                            dgMain.Items.Add(item);
+                            //lineItemList.Add(item);
+                        }
+
+                        double sum = 0;
+                        foreach (clsItem item in tempList)
+                        {
+                            sum += double.Parse(item.sCost);
+                        }
+                        tbTotal.Content = "$" + sum.ToString();
+
+                        //enable components
+                        tbInvoiceNumber.IsEnabled = false;
+                        dpInvoiceDate.IsEnabled = false;
+                        btnAdd.IsEnabled = false;
+                        tbItemCost.IsEnabled = false;
+                        tbItemCost.IsReadOnly = true;
+                        cbLineItem.IsEnabled = false;
+                        btnAddItem.IsEnabled = false;
+                        btnRemoveItem.IsEnabled = false;
+                        btnSaveInvoice.IsEnabled = false;
+                        tbInvoiceNumber.IsReadOnly = true;
+                        btnEdit.IsEnabled = true;
+                        btnDelete.IsEnabled = true;
+                        btnSearch.IsEnabled = true;//
+                        btnUpdate.IsEnabled = true;//
+                    }
                 }
-                
                 
             }
             catch (System.Exception ex)
@@ -167,6 +173,9 @@ namespace CS3280GroupProject.Main
                 btnAddItem.IsEnabled = true;
                 btnRemoveItem.IsEnabled = true;
                 btnSaveInvoice.IsEnabled = true;
+                btnUpdate.IsEnabled = false;
+                btnSearch.IsEnabled = false;
+                
 
                 //set placeholder to TBD 
                 tbInvoiceNumber.Text = "TBD";
@@ -195,19 +204,21 @@ namespace CS3280GroupProject.Main
         private void cbLineItem_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox cb = (ComboBox)sender;
-
-            //get value of selected item
-            selectedItem = cb.SelectedItem.ToString();
-
-            //find cost of selected item
-            foreach (clsItem item in itemList)
+            if (cb.SelectedItem != null)
             {
-                if (item.sItemDesc.ToString() == selectedItem)
+                //get value of selected item
+                selectedItem = cb.SelectedItem.ToString();
+
+                //find cost of selected item
+                foreach (clsItem item in itemList)
                 {
-                    //fill cost text box with selected item price
-                    tbItemCost.Text = "$" + item.sCost.ToString();
+                    if (item.sItemDesc.ToString() == selectedItem)
+                    {
+                        //fill cost text box with selected item price
+                        tbItemCost.Text = "$" + item.sCost.ToString();
+                    }
                 }
-            } 
+            }
         }
 
         /// <summary>
@@ -318,27 +329,29 @@ namespace CS3280GroupProject.Main
              */
             try
             {
-                
-                 foreach (clsItem item in itemList)
+                currItem = new clsItem();
+                foreach (clsItem item in itemList)
                 {
                     if (item.sItemDesc.ToString() == selectedItem)
                     {
                         //fill cost text box with selected item price
-                        currItem.sItemCode = item.sItemCode.ToString();
-                        currItem.sCost = item.sCost.ToString();
-                        currItem.sItemDesc = item.sItemDesc.ToString();
+                        currItem.sItemCode = item.sItemCode;
+                        currItem.sCost = item.sCost;
+                        currItem.sItemDesc = item.sItemDesc;
                     }
                 }
 
                  //temp sum variable
                 double sum = 0;
+                double tempNum = 0;
 
                 //add item to line item list
                 lineItemList.Add(currItem);
                 //add item to data grid
                 dgMain.Items.Add(currItem);
+                //dgMain.Items.Insert(dgMain.Items.Count, currItem);
 
-                foreach (clsItem item in lineItemList) {
+                foreach (clsItem item in dgMain.Items) {
                     sum += double.Parse(item.sCost);
                 }
                 tbTotal.Content = "$" + sum.ToString();
@@ -365,15 +378,22 @@ namespace CS3280GroupProject.Main
             {
                 double sum2 = 0;
 
-                if (lineItemList.Count != 0) {
+                if (dgMain.SelectedItem != null) {
                     //remove item from datagrid
-                    dgMain.Items.Remove(currItem);
+                    dgMain.Items.Remove(dgMain.SelectedItem);
 
                     //remove from list
-                    lineItemList.Remove(currItem);
+                    //lineItemList.Remove(dgMain.SelectedItem);
+                    foreach(clsItem item in lineItemList)
+                    {
+                        if(item == dgMain.SelectedItem)
+                        {
+                            lineItemList.Remove(item);
+                        }
+                    }
 
                     //repopulate total count based on lineitemslist
-                    foreach (clsItem item in lineItemList)
+                    foreach (clsItem item in dgMain.Items)
                     {
                         sum2 += double.Parse(item.sCost);
                     }
@@ -405,7 +425,7 @@ namespace CS3280GroupProject.Main
              */
             try
             {
-                if (dpInvoiceDate.SelectedDate != null && lineItemList.Count > 0) {
+                if (dpInvoiceDate.SelectedDate != null/* && lineItemList.Count > 0*/) {
                     if (tbInvoiceNumber.Text != "TBD")
                     { //exists update
                         clsMainSQL.updateInvoice(Int32.Parse(tbInvoiceNumber.Text), dpInvoiceDate.Text);
@@ -424,7 +444,7 @@ namespace CS3280GroupProject.Main
                             clsMainSQL.addInvoiceLineItem(clsMainSQL.getNewInvoiceNumber(), count, item.sItemCode);
                             count++;
                         }
-
+                    }
                         //set everything to read only 
                         btnSearch.IsEnabled = true;
                         btnUpdate.IsEnabled = true;
@@ -443,7 +463,7 @@ namespace CS3280GroupProject.Main
                         btnDelete.IsEnabled = true;
                         
 
-                    }
+                    
                 }
                 else {
                     MessageBox.Show("Please enter invoice information before saving");
