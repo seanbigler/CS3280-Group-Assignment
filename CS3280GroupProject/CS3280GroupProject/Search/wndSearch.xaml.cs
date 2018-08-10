@@ -357,12 +357,18 @@ namespace CS3280GroupProject.Search
         {
             try
             {
-                //System.Windows.MessageBox.Show(((DataRowView)DGInvoices.SelectedValue).Row[0].ToString());
-                sSelectedInvoiceNum = ((DataRowView)DGInvoices.SelectedValue).Row[0].ToString();
+                if ((DataRowView)DGInvoices.SelectedValue != null) {
+                    //System.Windows.MessageBox.Show(((DataRowView)DGInvoices.SelectedValue).Row[0].ToString());
+                    sSelectedInvoiceNum = ((DataRowView)DGInvoices.SelectedValue).Row[0].ToString();
 
-                Start();
-                this.Hide();
-                mainWindow.Show();
+                    Start();
+                    this.Hide();
+                    mainWindow.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Please select an invoice");
+                }
             }
             catch (System.Exception ex)
             {
