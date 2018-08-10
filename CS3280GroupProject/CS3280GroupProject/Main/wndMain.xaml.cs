@@ -88,21 +88,53 @@ namespace CS3280GroupProject.Main
                 this.Hide();
                 searchWindow.ShowDialog();
 
-                //retrieve search selected.
-                selectedInvoice = Int32.Parse(searchWindow.SelectedInvoiceNum); 
-
-                //get invoice from selected num
-                clsInvoice invoice = new clsInvoice();
-                invoice = clsMainSQL.getInvoice(selectedInvoice);
-
-                //populate controls with invoice data for edit
-                tbInvoiceNumber.Text = invoice.getInvoiceNumber().ToString();
-                dpInvoiceDate.DisplayDate = DateTime.Parse(invoice.getInvoiceDate());
-                foreach (clsItem item in invoice.getLineItemList())
+                if (searchWindow.SelectedInvoiceNum != "")
                 {
-                    dgMain.Items.Add(item);
-                }
+                    //retrieve search selected.
+                    selectedInvoice = Int32.Parse(searchWindow.SelectedInvoiceNum);
 
+                    //get invoice from selected num
+                    clsInvoice invoice = new clsInvoice();
+                    invoice = clsMainSQL.getInvoice(selectedInvoice);
+                    ObservableCollection<clsItem> tempList = invoice.getLineItemList();
+
+                    //populate controls with invoice data for edit
+                    tbInvoiceNumber.Text = invoice.getInvoiceNumber().ToString();
+                    dpInvoiceDate.DisplayDate = DateTime.Parse(invoice.getInvoiceDate());
+                    dpInvoiceDate.SelectedDate = DateTime.Parse(invoice.getInvoiceDate());
+
+                    dgMain.Items.Clear();
+
+                    foreach (clsItem item in tempList)
+                    {
+                        dgMain.Items.Add(item);
+                    }
+
+                    double sum = 0;
+                    foreach (clsItem item in tempList)
+                    {
+                        sum += double.Parse(item.sCost);
+                    }
+                    tbTotal.Content = "$" + sum.ToString();
+
+                    //enable components
+                    tbInvoiceNumber.IsEnabled = false;
+                    dpInvoiceDate.IsEnabled = false;
+                    btnAdd.IsEnabled = false;
+                    tbItemCost.IsEnabled = false;
+                    tbItemCost.IsReadOnly = true;
+                    cbLineItem.IsEnabled = false;
+                    btnAddItem.IsEnabled = false;
+                    btnRemoveItem.IsEnabled = false;
+                    btnSaveInvoice.IsEnabled = false;
+                    tbInvoiceNumber.IsReadOnly = true;
+                    btnEdit.IsEnabled = true;
+                    btnDelete.IsEnabled = true;
+                    btnSearch.IsEnabled = false;
+                    btnUpdate.IsEnabled = false;
+                }
+                
+                
             }
             catch (System.Exception ex)
             {
@@ -200,6 +232,9 @@ namespace CS3280GroupProject.Main
                 btnAddItem.IsEnabled = true;
                 btnRemoveItem.IsEnabled = true;
                 btnSaveInvoice.IsEnabled = true;
+                btnSearch.IsEnabled = false;
+                btnUpdate.IsEnabled = false;
+
 
                 //get list of items from clsItemsLogic
                 itemList = item.getItems();
@@ -231,7 +266,6 @@ namespace CS3280GroupProject.Main
              */
             try
             {
-              
                 //delete invoice from tables
                 clsMainSQL.deleteInvoice(Int32.Parse(tbInvoiceNumber.Text));
 
@@ -253,6 +287,8 @@ namespace CS3280GroupProject.Main
                 tbInvoiceNumber.IsReadOnly = true;
                 btnAdd.IsEnabled = true;
                 tbTotal.Content = "$0";
+                btnSearch.IsEnabled = true;
+                btnUpdate.IsEnabled = true;
 
                 //clear line item list
                 foreach (clsItem item in lineItemList)
@@ -390,6 +426,8 @@ namespace CS3280GroupProject.Main
                         }
 
                         //set everything to read only 
+                        btnSearch.IsEnabled = true;
+                        btnUpdate.IsEnabled = true;
                         tbInvoiceNumber.Text = clsMainSQL.getNewInvoiceNumber().ToString();
                         tbInvoiceNumber.IsEnabled = false;
                         dpInvoiceDate.IsEnabled = false;
@@ -404,6 +442,7 @@ namespace CS3280GroupProject.Main
                         btnEdit.IsEnabled = true;
                         btnDelete.IsEnabled = true;
                         
+
                     }
                 }
                 else {

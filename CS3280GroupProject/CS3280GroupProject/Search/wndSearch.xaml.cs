@@ -26,7 +26,7 @@ namespace CS3280GroupProject.Search
         /// <summary>
         /// The invoice num that is selected from the search
         /// </summary>
-        private string sSelectedInvoiceNum;
+        private string sSelectedInvoiceNum = "";
         /// <summary>
         /// Reference to the main window
         /// </summary>
@@ -427,6 +427,7 @@ namespace CS3280GroupProject.Search
             {
                 if (mainWindow != null)
                 {
+                    sSelectedInvoiceNum = "";
                     mainWindow.searchWindow = null;
                     mainWindow.Show();
                 }

@@ -98,7 +98,7 @@ namespace CS3280GroupProject
 
                 //get line items
                 int iRef = 0;
-                sSQL = "SELECT LineItems.ItemCode, ItemDesc.ItemDesc, ItemDesc.Cost FROM ItemDesc" + 
+                sSQL = "SELECT LineItems.ItemCode, ItemDesc.ItemDesc, ItemDesc.Cost FROM ItemDesc " + 
                         "INNER JOIN LineItems ON ItemDesc.ItemCode = LineItems.ItemCode WHERE LineItems.InvoiceNum = " + invoiceNumber;
                 dataSet = ds.ExecuteSQLStatement(sSQL, ref iRef);
                 foreach (DataRow dr in dataSet.Tables[0].Rows)
