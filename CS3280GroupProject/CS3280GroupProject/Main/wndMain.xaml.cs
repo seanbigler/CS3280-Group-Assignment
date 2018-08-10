@@ -86,7 +86,7 @@ namespace CS3280GroupProject.Main
                     searchWindow = new wndSearch(this);
                 }
                 this.Hide();
-                searchWindow.Show();
+                searchWindow.ShowDialog();
 
                 //retrieve search selected.
                 selectedInvoice = Int32.Parse(searchWindow.SelectedInvoiceNum); 
