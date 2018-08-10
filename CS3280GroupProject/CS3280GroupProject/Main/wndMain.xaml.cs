@@ -31,7 +31,7 @@ namespace CS3280GroupProject.Main
         clsItemsLogic item;
         public string selectedItem;
         clsItem currItem;
-        string selectedInvoice;
+        int selectedInvoice;
 
         #endregion
 
@@ -87,17 +87,21 @@ namespace CS3280GroupProject.Main
                 }
                 this.Hide();
                 searchWindow.Show();
+
                 //retrieve search selected.
-                selectedInvoice = searchWindow.SelectedInvoiceNum;
-                tbInvoiceNumber.Text = selectedInvoice;
-                clsSearchLogic search = new clsSearchLogic();
-                List<string> list = new List<string>();
-                list = search.GetInvoiceDateWithNum(selectedInvoice);
-                dpInvoiceDate.Text = list[0];
-                List<clsItem> items = new List<clsItem>();
-               
+                selectedInvoice = Int32.Parse(searchWindow.SelectedInvoiceNum); 
 
+                //get invoice from selected num
+                clsInvoice invoice = new clsInvoice();
+                invoice = clsMainSQL.getInvoice(selectedInvoice);
 
+                //populate controls with invoice data for edit
+                tbInvoiceNumber.Text = invoice.getInvoiceNumber().ToString();
+                dpInvoiceDate.DisplayDate = DateTime.Parse(invoice.getInvoiceDate());
+                foreach (clsItem item in invoice.getLineItemList())
+                {
+                    dgMain.Items.Add(item);
+                }
 
             }
             catch (System.Exception ex)
